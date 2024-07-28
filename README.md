@@ -10,13 +10,13 @@ GapMinder collects data from a handful of sources, including the Institute for H
 
 
 ### Variable Name & Description of Indicator:
-`country`: Unique Identifier
+  - `country`: Unique Identifier
 
-`incomeperperson`: Gross Domestic Product per capita in constant 2000 US$. The inflation but not the differences in the cost of living between countries has been taken into account.
+  - `incomeperperson`: Gross Domestic Product per capita in constant 2000 US$. The inflation but not the differences in the cost of living between countries has been taken into account.
 
-`internetuserate`: Internet users (per 100 people). Internet users are people with access to the worldwide network.
+  - `internetuserate`: Internet users (per 100 people). Internet users are people with access to the worldwide network.
 
-`urbanrate`: Urban population (% of total) Urban population refers to people living in urban areas as defined by national statistical offices (calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects)
+  - `urbanrate`: Urban population (% of total) Urban population refers to people living in urban areas as defined by national statistical offices (calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects)
 
 More information is available at www.gapminder.org.
 
