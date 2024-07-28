@@ -1,5 +1,6 @@
 # Global Internet Usage
 
+<img src="./images/dataset-cover.png" alt="ScentAI" width="800"/>
 
 ---
 
