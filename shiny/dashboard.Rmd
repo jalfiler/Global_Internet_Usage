@@ -1,0 +1,157 @@
+---
+title: "Global Internet Usage"
+author: Jomaica Lei
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal
+    social: menu
+    source_code: embed
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(leaflet)
+library(ggmap)
+library(plotly)
+library(tidyverse)
+library(countrycode)
+library(readr)
+library(VIM)
+
+# Load your dataset
+gapminder_internet <- read_csv('gapminder_internet.csv')
+
+# Check for urbanrate column
+if (!"urbanrate" %in% colnames(gapminder_internet)) {
+  stop("The 'urbanrate' column is missing from the dataset.")
+}
+
+# Data Preprocessing
+gapminder_internet <- gapminder_internet %>%
+  mutate(across(c(incomeperperson, internetuserate, urbanrate), round, 2),
+         count_na = rowSums(is.na(.))) %>%
+  filter(count_na < 2)
+
+gapminder_internet <- kNN(gapminder_internet, k = 5, imp_var = FALSE) %>%
+  select(-count_na)
+
+gapminder_internet <- gapminder_internet %>%
+  mutate(code = countrycode(country, origin = 'country.name', destination = 'iso3c'))
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Choropleth Map
+
+```{r}
+renderPlotly({
+  fig <- plot_geo(gapminder_internet, locations = ~code) %>%
+    add_trace(
+      z = ~incomeperperson, zmin = 0, zmax = 50000, color = ~incomeperperson, colors = 'Blues', hoverinfo = 'text',
+      text = ~paste0(gapminder_internet$country, "\n$", gapminder_internet$incomeperperson), visible = TRUE) %>%
+    add_trace(
+      z = ~internetuserate, zmin = 0, zmax = max(gapminder_internet$internetuserate), color = ~internetuserate, hoverinfo = 'text',
+      text = ~paste0(gapminder_internet$country, "\n", gapminder_internet$internetuserate), visible = FALSE) %>%
+    add_trace(
+      z = ~urbanrate, color = ~urbanrate, zmin = 0, zmax = max(gapminder_internet$urbanrate), hoverinfo = 'text',
+      text = ~paste0(gapminder_internet$country, "\n", gapminder_internet$urbanrate, "%"), visible = FALSE)
+
+  chart_types <- list(
+    type = "buttons",
+    direction = "right",
+    xanchor = 'center',
+    yanchor = "top",
+    pad = list('r' = 10, 't' = 10, 'b' = 10),
+    x = 0.5,
+    y = 1.0,
+    buttons = list(
+      list(method = "restyle",
+           args = list("visible", list(TRUE, FALSE, FALSE)),
+           label = "Income Per Person"),
+      list(method = "restyle",
+           args = list("visible", list(FALSE, TRUE, FALSE)),
+           label = "Internet User Rates"),
+      list(method = "restyle",
+           args = list("visible", list(FALSE, FALSE, TRUE)),
+           label = "Urban Rates"))
+  )
+
+  fig <- fig %>% layout(
+    xaxis = list(domain = c(0.1, 1)),
+    yaxis = list(title = ""),
+    updatemenus = list(chart_types),
+    title = list(text = "Choropleth Map of the World", y = 0.95),
+    margin = list(t = 100)
+  ) %>%
+    hide_colorbar()
+
+  fig
+})
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Histogram
+
+```{r}
+renderPlotly({
+  histogram <- plot_ly(gapminder_internet, marker = list(color = "lightgrey", line = list(color = "darkgrey", width = 2))) %>%
+    add_trace(x = ~log(incomeperperson), type = "histogram", histnorm = "probability", name = 'Log income', visible = TRUE) %>%
+    add_trace(x = ~internetuserate, type = "histogram", histnorm = "probability", visible = FALSE, name = 'Internet User Rate') %>%
+    add_trace(x = ~urbanrate, type = "histogram", histnorm = "probability", name = 'Urban Rates', visible = FALSE)
+  
+  chart_types <- list(
+    type = "buttons",
+    direction = "right",
+    xanchor = 'center',
+    yanchor = "top",
+    pad = list('r' = 10, 't' = 10, 'b' = 10),
+    x = 0.5,
+    y = 1.2,
+    buttons = list(
+      list(method = "restyle",
+           args = list("visible", list(TRUE, FALSE, FALSE)),
+           label = "Income Per Person"),
+      list(method = "restyle",
+           args = list("visible", list(FALSE, TRUE, FALSE)),
+           label = "Internet User Rates"),
+      list(method = "restyle",
+           args = list("visible", list(FALSE, FALSE, TRUE)),
+           label = "Urban Rates")))
+  
+  histogram <- histogram %>% layout(
+    xaxis = list(domain = c(0.1, 1), title = ''),
+    yaxis = list(title = ""),
+    updatemenus = list(chart_types),
+    title = list(text = "Histogram of Log Income, Internet User Rates, and Urban Rates", y = 1.05),
+    margin = list(t = 150),
+    bargap = 0.1
+  )
+  
+  histogram
+})
+```
+
+### Top 10 GDP per Capita
+
+```{r}
+renderPlotly({
+  gapminder_internet %>%
+    arrange(desc(incomeperperson)) %>% 
+    slice(1:10) %>%
+    plot_ly(x = ~incomeperperson, y = ~country, type = 'bar', orientation = 'h',
+            marker = list(color = 'rgb(158,202,225)',
+                          line = list(color = 'rgb(8,48,107)', width = 1.5)),
+            text = ~paste0('$', incomeperperson), textposition = 'auto', hoverinfo = 'text') %>%
+    layout(
+      yaxis = list(categoryorder = "total ascending", title = ""),
+      title = list(text = 'Top 10 Countries by Income Per Person', y = 0.95),
+      margin = list(t = 100)
+    )
+})
+```
+
