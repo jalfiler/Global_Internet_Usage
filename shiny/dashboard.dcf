@@ -1,0 +1,12 @@
+name: dashboard
+title: dashboard
+username: jlei8
+account: jlei8
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12374381
+bundleId: 8915876
+url: https://jlei8.shinyapps.io/dashboard/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
