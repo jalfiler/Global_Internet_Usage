@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Exploration Challenge</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DEC_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DEC_files/libs/quarto-html/quarto.js"></script>
+<script src="DEC_files/libs/quarto-html/popper.min.js"></script>
+<script src="DEC_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DEC_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DEC_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DEC_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DEC_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DEC_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DEC_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="DEC_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="DEC_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<link href="DEC_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="DEC_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="DEC_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="DEC_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="DEC_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="DEC_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="DEC_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="DEC_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="DEC_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Exploration Challenge</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Jomaica Lei<br>
+7/27/24</p>
+<section id="global-internet-usage" class="level2">
+<h2 class="anchored" data-anchor-id="global-internet-usage">Global Internet Usage</h2>
+<p>Internet Usage: Gapminder Dataset</p>
+</section>
+<section id="about-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="about-dataset">About Dataset</h2>
+<p><strong>Link:</strong> <a href="https://www.kaggle.com/datasets/sansuthi/gapminder-internet" class="uri">https://www.kaggle.com/datasets/sansuthi/gapminder-internet</a></p>
+<p>GapMinder collects data from a handful of sources, including the Institute for Health Metrics and Evaluation, the US Census Bureau’s International Database, the United Nations Statistics Division, and the World Bank.</p>
+<section id="variable-name-description-of-indicator" class="level3">
+<h3 class="anchored" data-anchor-id="variable-name-description-of-indicator"><strong>Variable Name &amp; Description of Indicator:</strong></h3>
+<ul>
+<li><p>country: Unique Identifier</p></li>
+<li><p>incomeperperson: Gross Domestic Product per capita in constant 2000 US$. The inflation but not the differences in the cost of living between countries has been taken into account.</p></li>
+<li><p>internetuserate: Internet users (per 100 people). Internet users are people with access to the worldwide network.</p></li>
+<li><p>urbanrate: Urban population (% of total) Urban population refers to people living in urban areas as defined by national statistical offices (calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects)</p></li>
+</ul>
+<p>More information is available at <a href="http://www.gapminder.org/">www.gapminder.org</a></p>
+</section>
+<section id="install-packages-and-load-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="install-packages-and-load-libraries">1. Install Packages and Load Libraries</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ Google's Terms of Service: &lt;https://mapsplatform.google.com&gt;
+  Stadia Maps' Terms of Service: &lt;https://stadiamaps.com/terms-of-service/&gt;
+  OpenStreetMap's Tile Usage Policy: &lt;https://operations.osmfoundation.org/policies/tiles/&gt;
+ℹ Please cite ggmap if you use it! Use `citation("ggmap")` for details.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'plotly'
+
+The following object is masked from 'package:ggmap':
+
+    wind
+
+The following object is masked from 'package:ggplot2':
+
+    last_plot
+
+The following object is masked from 'package:stats':
+
+    filter
+
+The following object is masked from 'package:graphics':
+
+    layout</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks plotly::filter(), stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VIM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: colorspace
+Loading required package: grid
+VIM is ready to use.
+
+Suggestions and bug-reports can be submitted at: https://github.com/statistikat/VIM/issues
+
+Attaching package: 'VIM'
+
+The following object is masked from 'package:datasets':
+
+    sleep</code></pre>
+</div>
+</div>
+</section>
+<section id="load-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="load-the-dataset">2. Load the Dataset</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set wd + load csv file</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gapminder_internet <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'gapminder_internet.csv'</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 213 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): country
+dbl (3): incomeperperson, internetuserate, urbanrate
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_internet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  country             incomeperperson internetuserate urbanrate
+  &lt;chr&gt;                         &lt;dbl&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+1 Afghanistan                     NA             3.65      24.0
+2 Albania                       1915.           45.0       46.7
+3 Algeria                       2232.           12.5       65.2
+4 Andorra                      21943.           81         88.9
+5 Angola                        1381.           10.0       56.7
+6 Antigua and Barbuda          11894.           80.6       30.5</code></pre>
+</div>
+</div>
+</section>
+<section id="variable-description" class="level3">
+<h3 class="anchored" data-anchor-id="variable-description">3. Variable Description</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>vtable<span class="sc">::</span><span class="fu">vtable</span>(gapminder_internet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<caption>gapminder_internet</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Class</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">country</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">incomeperperson</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">Num: 103.776 to 105147.438</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">internetuserate</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">Num: 0.21 to 95.638</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">urbanrate</td>
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">Num: 10.4 to 100</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="data-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning">4. Data Cleaning</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a country code value to reference in plot_ly function</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>gapminder_internet <span class="ot">&lt;-</span> gapminder_internet <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">code =</span> <span class="fu">countrycode</span>(country, <span class="at">origin =</span> <span class="st">'country.name'</span>, <span class="at">destination =</span> <span class="st">'iso3c'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `code = countrycode(country, origin = "country.name",
+  destination = "iso3c")`.
+Caused by warning:
+! Some values were not matched unambiguously: Netherlands Antilles, Serbia and Montenegro</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>gapminder_internet<span class="sc">$</span>incomeperperson <span class="ot">&lt;-</span> <span class="fu">round</span>(gapminder_internet<span class="sc">$</span>incomeperperson, <span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>gapminder_internet<span class="sc">$</span>internetuserate <span class="ot">&lt;-</span> <span class="fu">round</span>(gapminder_internet<span class="sc">$</span>internetuserate, <span class="dv">2</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Count NA, remove row if missing two or more</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>gapminder_internet <span class="ot">&lt;-</span> gapminder_internet <span class="sc">%&gt;%</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count_na =</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(gapminder_internet))) <span class="sc">%&gt;%</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(count_na <span class="sc">&lt;</span> <span class="dv">2</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gapminder_internet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   country          incomeperperson    internetuserate   urbanrate     
+ Length:198         Min.   :   103.8   Min.   : 0.21   Min.   : 10.40  
+ Class :character   1st Qu.:   748.2   1st Qu.:10.00   1st Qu.: 36.84  
+ Mode  :character   Median :  2553.5   Median :31.57   Median : 57.28  
+                    Mean   :  8741.0   Mean   :35.48   Mean   : 56.56  
+                    3rd Qu.:  9379.9   3rd Qu.:55.65   3rd Qu.: 73.92  
+                    Max.   :105147.4   Max.   :95.64   Max.   :100.00  
+                    NA's   :8          NA's   :7       NA's   :1       
+     code              count_na      
+ Length:198         Min.   :0.00000  
+ Class :character   1st Qu.:0.00000  
+ Mode  :character   Median :0.00000  
+                    Mean   :0.08081  
+                    3rd Qu.:0.00000  
+                    Max.   :1.00000  
+                                     </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Impute missing values using kNN from VIM</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>gapminder_internet <span class="ot">&lt;-</span> <span class="fu">kNN</span>(gapminder_internet, <span class="at">k =</span> <span class="dv">5</span>, <span class="at">imp_var =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify imputed dataset</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(gapminder_internet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   country          incomeperperson    internetuserate   urbanrate     
+ Length:198         Min.   :   103.8   Min.   : 0.21   Min.   : 10.40  
+ Class :character   1st Qu.:   763.4   1st Qu.:10.21   1st Qu.: 36.84  
+ Mode  :character   Median :  2553.5   Median :33.50   Median : 57.61  
+                    Mean   :  8671.8   Mean   :35.59   Mean   : 56.58  
+                    3rd Qu.:  9243.6   3rd Qu.:53.56   3rd Qu.: 73.85  
+                    Max.   :105147.4   Max.   :95.64   Max.   :100.00  
+     code              count_na      
+ Length:198         Min.   :0.00000  
+ Class :character   1st Qu.:0.00000  
+ Mode  :character   Median :0.00000  
+                    Mean   :0.08081  
+                    3rd Qu.:0.00000  
+                    Max.   :1.00000  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gapminder_internet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              country incomeperperson internetuserate urbanrate code count_na
+1         Afghanistan          558.06            3.65     24.04  AFG        1
+2             Albania         1915.00           44.99     46.72  ALB        0
+3             Algeria         2231.99           12.50     65.22  DZA        0
+4             Andorra        21943.34           81.00     88.92  AND        0
+5              Angola         1381.00           10.00     56.70  AGO        0
+6 Antigua and Barbuda        11894.46           80.65     30.46  ATG        0</code></pre>
+</div>
+</div>
+</section>
+<section id="drop-down-menu-chloropleths" class="level3">
+<h3 class="anchored" data-anchor-id="drop-down-menu-chloropleths">5. <strong>Drop-down Menu Chloropleths</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_geo</span>(gapminder_internet, <span class="at">locations =</span> <span class="sc">~</span>code) <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="sc">~</span>incomeperperson, <span class="at">zmin =</span> <span class="dv">0</span>, <span class="at">zmax =</span> <span class="dv">50000</span>, <span class="at">color =</span> <span class="sc">~</span>incomeperperson, <span class="at">colors =</span> <span class="st">'Blues'</span>, <span class="at">hoverinfo =</span> <span class="st">'text'</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste0</span>(gapminder_internet<span class="sc">$</span>country, <span class="st">"</span><span class="sc">\n</span><span class="st">$"</span>, gapminder_internet<span class="sc">$</span>incomeperperson), <span class="at">visible =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="sc">~</span>internetuserate, <span class="at">zmin =</span> <span class="dv">0</span>, <span class="at">zmax =</span> <span class="fu">max</span>(gapminder_internet<span class="sc">$</span>internetuserate), <span class="at">color =</span> <span class="sc">~</span>internetuserate, <span class="at">hoverinfo =</span> <span class="st">'text'</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste0</span>(gapminder_internet<span class="sc">$</span>country, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, gapminder_internet<span class="sc">$</span>internetuserate), <span class="at">visible =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="sc">~</span>urbanrate, <span class="at">color =</span> <span class="sc">~</span>urbanrate, <span class="at">zmin =</span> <span class="dv">0</span>, <span class="at">zmax =</span> <span class="fu">max</span>(gapminder_internet<span class="sc">$</span>urbanrate), <span class="at">hoverinfo =</span> <span class="st">'text'</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste0</span>(gapminder_internet<span class="sc">$</span>country, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, gapminder_internet<span class="sc">$</span>urbanrate, <span class="st">"%"</span>), <span class="at">visible =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>chart_types <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"buttons"</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="st">"right"</span>,</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">xanchor =</span> <span class="st">'center'</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">yanchor =</span> <span class="st">"top"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">pad =</span> <span class="fu">list</span>(<span class="st">'r'</span> <span class="ot">=</span> <span class="dv">10</span>, <span class="st">'t'</span> <span class="ot">=</span> <span class="dv">10</span>, <span class="st">'b'</span> <span class="ot">=</span> <span class="dv">10</span>),</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fl">0.5</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fl">1.1</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">buttons =</span> <span class="fu">list</span>(</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)),</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Income Per Person"</span>),</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)),</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Internet User Rates"</span>),</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)),</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Urban Rates"</span>))</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> fig <span class="sc">%&gt;%</span> <span class="fu">layout</span>(</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">domain =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>)),</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">""</span>),</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">updatemenus =</span> <span class="fu">list</span>(chart_types),</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">"Choropleth Map of the World"</span>, <span class="at">y =</span> <span class="fl">0.95</span>),</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">margin =</span> <span class="fu">list</span>(<span class="at">t =</span> <span class="dv">100</span>)</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hide_colorbar</span>()</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0b2ee1fd008a3dbf66eb" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0b2ee1fd008a3dbf66eb">{"x":{"visdat":{"1e5f7d62717c":["function () ","plotlyVisDat"]},"cur_data":"1e5f7d62717c","attrs":{"1e5f7d62717c":{"locations":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"zmin":0,"zmax":95.640000000000001,"color":{},"hoverinfo":"text","text":{},"visible":false,"inherit":true},"1e5f7d62717c.1":{"locations":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"color":{},"zmin":0,"zmax":100,"hoverinfo":"text","text":{},"visible":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":100,"r":10},"mapType":"geo","updatemenus":[{"type":"buttons","direction":"right","xanchor":"center","yanchor":"top","pad":{"r":10,"t":10,"b":10},"x":0.5,"y":1.1000000000000001,"buttons":[{"method":"restyle","args":["visible",[true,false,false]],"label":"Income Per Person"},{"method":"restyle","args":["visible",[false,true,false]],"label":"Internet User Rates"},{"method":"restyle","args":["visible",[false,false,true]],"label":"Urban Rates"}]}],"title":{"text":"Choropleth Map of the World","y":0.94999999999999996},"scene":{"zaxis":{"title":"incomeperperson"}},"geo":{"domain":{"x":[0,1],"y":[0,1]}},"hovermode":"closest","showlegend":true,"legend":{"yanchor":"top","y":0.25}},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"colorbar":{"title":"incomeperperson<br />internetuserate<br />urbanrate","ticklen":2,"len":0.25,"lenmode":"fraction","y":1,"yanchor":"top"},"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"locations":["AFG","ALB","DZA","AND","AGO","ATG","ARG","ARM","ABW","AUS","AUT","AZE","BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BIH","BWA","BRA","BRN","BGR","BFA","BDI","KHM","CMR","CAN","CPV","CYM","CAF","TCD","CHL","CHN","COL","COM","COD","COG","CRI","CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA","DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH","FRO","FJI","FIN","FRA","PYF","GAB","GMB","GEO","DEU","GHA","GRC","GRL","GRD","GTM","GIN","GNB","GUY","HTI","HND","HKG","HUN","ISL","IND","IDN","IRN","IRQ","IRL","ISR","ITA","JAM","JPN","JOR","KAZ","KEN","KIR","KOR","KWT","KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE","LTU","LUX","MAC","MKD","MDG","MWI","MYS","MDV","MLI","MLT","MHL","MRT","MUS","MEX","FSM","MDA","MCO","MNG","MNE","MAR","MOZ","NAM","NPL","NLD","NZL","NIC","NER","NGA","NOR","OMN","PAK","PLW","PAN","PNG","PRY","PER","PHL","POL","PRT","PRI","QAT","ROU","RUS","RWA","KNA","LCA","VCT","WSM","SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP","SVK","SVN","SLB","ZAF","ESP","LKA","SDN","SUR","SWZ","SWE","CHE","SYR","TJK","TZA","THA","TLS","TGO","TON","TTO","TUN","TUR","TKM","TUV","UGA","UKR","ARE","GBR","USA","URY","UZB","VUT","VEN","VNM","PSE","YEM","ZMB","ZWE"],"z":[558.05999999999995,1915,2231.9899999999998,21943.34,1381,11894.459999999999,10749.42,1326.74,1381,25249.990000000002,26692.98,2344.9000000000001,19630.540000000001,12505.209999999999,558.05999999999995,9243.5900000000001,2737.6700000000001,24496.049999999999,3545.6500000000001,377.04000000000002,62682.150000000001,1324.1900000000001,1232.79,2183.3400000000001,4189.4399999999996,4699.4099999999999,17092.459999999999,2549.5599999999999,276.19999999999999,115.31,557.95000000000005,713.63999999999999,25575.349999999999,1959.8399999999999,32535.830000000002,239.52000000000001,275.88,6334.1099999999997,2425.4699999999998,3233.4200000000001,336.37,103.78,1253.29,5188.8999999999996,591.07000000000005,6338.4899999999998,4495.0500000000002,15313.860000000001,7381.3100000000004,30532.279999999999,895.32000000000005,6147.7799999999997,4049.1700000000001,1728.02,1975.55,2557.4299999999998,8654.5400000000009,131.80000000000001,6238.54,220.88999999999999,9243.5900000000001,2230.6799999999998,27110.73,22878.470000000001,2183.3400000000001,4180.7700000000004,354.60000000000002,1258.76,25306.189999999999,358.98000000000002,13577.879999999999,20751.889999999999,5330.3999999999996,1860.75,411.5,161.31999999999999,1200.6500000000001,371.42000000000002,1392.4100000000001,35536.07,5634,33945.309999999998,786.70000000000005,1143.8299999999999,2161.5500000000002,736.26999999999998,27595.09,22275.75,18982.27,3665.3499999999999,39309.480000000003,2534,2481.7199999999998,468.69999999999999,760.25999999999999,16372.5,5528.3599999999997,372.73000000000002,554.88,5011.2200000000003,6746.6099999999997,495.73000000000002,155.03,7885.4700000000003,81647.100000000006,5332.2399999999998,52301.589999999997,33923.309999999998,2221.1900000000001,242.68000000000001,184.13999999999999,5184.71,4038.8600000000001,269.88999999999999,11066.780000000001,2437.2800000000002,609.13,5182.1400000000003,6105.2799999999997,2146.3600000000001,595.87,105147.44,772.92999999999995,2222.3400000000001,1844.3499999999999,389.75999999999999,2667.25,268.25999999999999,26551.84,14778.16,948.36000000000001,180.08000000000001,544.60000000000002,39972.349999999999,11191.809999999999,668.54999999999995,6243.5699999999997,5900.6199999999999,744.24000000000001,1621.1800000000001,3180.4299999999998,1383.4000000000001,6575.75,11744.83,15822.110000000001,33931.830000000002,2636.79,2923.1399999999999,338.26999999999998,9175.7999999999993,5248.5799999999999,4885.0500000000002,1784.0699999999999,31993.200000000001,1621.1800000000001,9425.3299999999999,561.71000000000004,1194.71,8614.1200000000008,268.32999999999998,32535.830000000002,8445.5300000000007,12729.450000000001,1144.0999999999999,3745.6500000000001,15461.76,1295.74,523.95000000000005,2668.02,1810.23,32292.48,37662.75,1525.78,279.18000000000001,456.38999999999999,2712.52,369.56999999999999,285.22000000000003,2025.28,10480.82,3164.9299999999998,5348.6000000000004,2062.1300000000001,1714.9400000000001,377.42000000000002,1036.8299999999999,21087.389999999999,28033.490000000002,37491.18,9106.3299999999999,952.83000000000004,1543.96,5528.3599999999997,722.80999999999995,3180.4299999999998,610.36000000000001,432.23000000000002,320.76999999999998],"zmin":0,"zmax":50000,"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Afghanistan<br />$558.06","Albania<br />$1915","Algeria<br />$2231.99","Andorra<br />$21943.34","Angola<br />$1381","Antigua and Barbuda<br />$11894.46","Argentina<br />$10749.42","Armenia<br />$1326.74","Aruba<br />$1381","Australia<br />$25249.99","Austria<br />$26692.98","Azerbaijan<br />$2344.9","Bahamas<br />$19630.54","Bahrain<br />$12505.21","Bangladesh<br />$558.06","Barbados<br />$9243.59","Belarus<br />$2737.67","Belgium<br />$24496.05","Belize<br />$3545.65","Benin<br />$377.04","Bermuda<br />$62682.15","Bhutan<br />$1324.19","Bolivia<br />$1232.79","Bosnia and Herzegovina<br />$2183.34","Botswana<br />$4189.44","Brazil<br />$4699.41","Brunei<br />$17092.46","Bulgaria<br />$2549.56","Burkina Faso<br />$276.2","Burundi<br />$115.31","Cambodia<br />$557.95","Cameroon<br />$713.64","Canada<br />$25575.35","Cape Verde<br />$1959.84","Cayman Islands<br />$32535.83","Central African Rep.<br />$239.52","Chad<br />$275.88","Chile<br />$6334.11","China<br />$2425.47","Colombia<br />$3233.42","Comoros<br />$336.37","Congo, Dem. Rep.<br />$103.78","Congo, Rep.<br />$1253.29","Costa Rica<br />$5188.9","Cote d'Ivoire<br />$591.07","Croatia<br />$6338.49","Cuba<br />$4495.05","Cyprus<br />$15313.86","Czech Rep.<br />$7381.31","Denmark<br />$30532.28","Djibouti<br />$895.32","Dominica<br />$6147.78","Dominican Rep.<br />$4049.17","Ecuador<br />$1728.02","Egypt<br />$1975.55","El Salvador<br />$2557.43","Equatorial Guinea<br />$8654.54","Eritrea<br />$131.8","Estonia<br />$6238.54","Ethiopia<br />$220.89","Faeroe Islands<br />$9243.59","Fiji<br />$2230.68","Finland<br />$27110.73","France<br />$22878.47","French Polynesia<br />$2183.34","Gabon<br />$4180.77","Gambia<br />$354.6","Georgia<br />$1258.76","Germany<br />$25306.19","Ghana<br />$358.98","Greece<br />$13577.88","Greenland<br />$20751.89","Grenada<br />$5330.4","Guatemala<br />$1860.75","Guinea<br />$411.5","Guinea-Bissau<br />$161.32","Guyana<br />$1200.65","Haiti<br />$371.42","Honduras<br />$1392.41","Hong Kong, China<br />$35536.07","Hungary<br />$5634","Iceland<br />$33945.31","India<br />$786.7","Indonesia<br />$1143.83","Iran<br />$2161.55","Iraq<br />$736.27","Ireland<br />$27595.09","Israel<br />$22275.75","Italy<br />$18982.27","Jamaica<br />$3665.35","Japan<br />$39309.48","Jordan<br />$2534","Kazakhstan<br />$2481.72","Kenya<br />$468.7","Kiribati<br />$760.26","Korea, Rep.<br />$16372.5","Kuwait<br />$5528.36","Kyrgyzstan<br />$372.73","Laos<br />$554.88","Latvia<br />$5011.22","Lebanon<br />$6746.61","Lesotho<br />$495.73","Liberia<br />$155.03","Libya<br />$7885.47","Liechtenstein<br />$81647.1","Lithuania<br />$5332.24","Luxembourg<br />$52301.59","Macao, China<br />$33923.31","Macedonia, FYR<br />$2221.19","Madagascar<br />$242.68","Malawi<br />$184.14","Malaysia<br />$5184.71","Maldives<br />$4038.86","Mali<br />$269.89","Malta<br />$11066.78","Marshall Islands<br />$2437.28","Mauritania<br />$609.13","Mauritius<br />$5182.14","Mexico<br />$6105.28","Micronesia, Fed. Sts.<br />$2146.36","Moldova<br />$595.87","Monaco<br />$105147.44","Mongolia<br />$772.93","Montenegro<br />$2222.34","Morocco<br />$1844.35","Mozambique<br />$389.76","Namibia<br />$2667.25","Nepal<br />$268.26","Netherlands<br />$26551.84","New Zealand<br />$14778.16","Nicaragua<br />$948.36","Niger<br />$180.08","Nigeria<br />$544.6","Norway<br />$39972.35","Oman<br />$11191.81","Pakistan<br />$668.55","Palau<br />$6243.57","Panama<br />$5900.62","Papua New Guinea<br />$744.24","Paraguay<br />$1621.18","Peru<br />$3180.43","Philippines<br />$1383.4","Poland<br />$6575.75","Portugal<br />$11744.83","Puerto Rico<br />$15822.11","Qatar<br />$33931.83","Romania<br />$2636.79","Russia<br />$2923.14","Rwanda<br />$338.27","Saint Kitts and Nevis<br />$9175.8","Saint Lucia<br />$5248.58","Saint Vincent and the Grenadines<br />$4885.05","Samoa<br />$1784.07","San Marino<br />$31993.2","Sao Tome and Principe<br />$1621.18","Saudi Arabia<br />$9425.33","Senegal<br />$561.71","Serbia<br />$1194.71","Seychelles<br />$8614.12","Sierra Leone<br />$268.33","Singapore<br />$32535.83","Slovak Republic<br />$8445.53","Slovenia<br />$12729.45","Solomon Islands<br />$1144.1","South Africa<br />$3745.65","Spain<br />$15461.76","Sri Lanka<br />$1295.74","Sudan<br />$523.95","Suriname<br />$2668.02","Swaziland<br />$1810.23","Sweden<br />$32292.48","Switzerland<br />$37662.75","Syria<br />$1525.78","Tajikistan<br />$279.18","Tanzania<br />$456.39","Thailand<br />$2712.52","Timor-Leste<br />$369.57","Togo<br />$285.22","Tonga<br />$2025.28","Trinidad and Tobago<br />$10480.82","Tunisia<br />$3164.93","Turkey<br />$5348.6","Turkmenistan<br />$2062.13","Tuvalu<br />$1714.94","Uganda<br />$377.42","Ukraine<br />$1036.83","United Arab Emirates<br />$21087.39","United Kingdom<br />$28033.49","United States<br />$37491.18","Uruguay<br />$9106.33","Uzbekistan<br />$952.83","Vanuatu<br />$1543.96","Venezuela<br />$5528.36","Vietnam<br />$722.81","West Bank and Gaza<br />$3180.43","Yemen, Rep.<br />$610.36","Zambia<br />$432.23","Zimbabwe<br />$320.77"],"visible":true,"type":"choropleth","marker":{"line":{"colorbar":{"title":"","ticklen":2},"cmin":0.20999999999999999,"cmax":105147.44,"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"color":[558.05999999999995,1915,2231.9899999999998,21943.34,1381,11894.459999999999,10749.42,1326.74,1381,25249.990000000002,26692.98,2344.9000000000001,19630.540000000001,12505.209999999999,558.05999999999995,9243.5900000000001,2737.6700000000001,24496.049999999999,3545.6500000000001,377.04000000000002,62682.150000000001,1324.1900000000001,1232.79,2183.3400000000001,4189.4399999999996,4699.4099999999999,17092.459999999999,2549.5599999999999,276.19999999999999,115.31,557.95000000000005,713.63999999999999,25575.349999999999,1959.8399999999999,32535.830000000002,239.52000000000001,275.88,6334.1099999999997,2425.4699999999998,3233.4200000000001,336.37,103.78,1253.29,5188.8999999999996,591.07000000000005,6338.4899999999998,4495.0500000000002,15313.860000000001,7381.3100000000004,30532.279999999999,895.32000000000005,6147.7799999999997,4049.1700000000001,1728.02,1975.55,2557.4299999999998,8654.5400000000009,131.80000000000001,6238.54,220.88999999999999,9243.5900000000001,2230.6799999999998,27110.73,22878.470000000001,2183.3400000000001,4180.7700000000004,354.60000000000002,1258.76,25306.189999999999,358.98000000000002,13577.879999999999,20751.889999999999,5330.3999999999996,1860.75,411.5,161.31999999999999,1200.6500000000001,371.42000000000002,1392.4100000000001,35536.07,5634,33945.309999999998,786.70000000000005,1143.8299999999999,2161.5500000000002,736.26999999999998,27595.09,22275.75,18982.27,3665.3499999999999,39309.480000000003,2534,2481.7199999999998,468.69999999999999,760.25999999999999,16372.5,5528.3599999999997,372.73000000000002,554.88,5011.2200000000003,6746.6099999999997,495.73000000000002,155.03,7885.4700000000003,81647.100000000006,5332.2399999999998,52301.589999999997,33923.309999999998,2221.1900000000001,242.68000000000001,184.13999999999999,5184.71,4038.8600000000001,269.88999999999999,11066.780000000001,2437.2800000000002,609.13,5182.1400000000003,6105.2799999999997,2146.3600000000001,595.87,105147.44,772.92999999999995,2222.3400000000001,1844.3499999999999,389.75999999999999,2667.25,268.25999999999999,26551.84,14778.16,948.36000000000001,180.08000000000001,544.60000000000002,39972.349999999999,11191.809999999999,668.54999999999995,6243.5699999999997,5900.6199999999999,744.24000000000001,1621.1800000000001,3180.4299999999998,1383.4000000000001,6575.75,11744.83,15822.110000000001,33931.830000000002,2636.79,2923.1399999999999,338.26999999999998,9175.7999999999993,5248.5799999999999,4885.0500000000002,1784.0699999999999,31993.200000000001,1621.1800000000001,9425.3299999999999,561.71000000000004,1194.71,8614.1200000000008,268.32999999999998,32535.830000000002,8445.5300000000007,12729.450000000001,1144.0999999999999,3745.6500000000001,15461.76,1295.74,523.95000000000005,2668.02,1810.23,32292.48,37662.75,1525.78,279.18000000000001,456.38999999999999,2712.52,369.56999999999999,285.22000000000003,2025.28,10480.82,3164.9299999999998,5348.6000000000004,2062.1300000000001,1714.9400000000001,377.42000000000002,1036.8299999999999,21087.389999999999,28033.490000000002,37491.18,9106.3299999999999,952.83000000000004,1543.96,5528.3599999999997,722.80999999999995,3180.4299999999998,610.36000000000001,432.23000000000002,320.76999999999998]},"showscale":false},"geo":"geo","frame":null},{"colorbar":{"title":"incomeperperson<br />internetuserate<br />urbanrate","ticklen":2,"len":0.25,"lenmode":"fraction","y":0.75,"yanchor":"top"},"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"locations":["AFG","ALB","DZA","AND","AGO","ATG","ARG","ARM","ABW","AUS","AUT","AZE","BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BIH","BWA","BRA","BRN","BGR","BFA","BDI","KHM","CMR","CAN","CPV","CYM","CAF","TCD","CHL","CHN","COL","COM","COD","COG","CRI","CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA","DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH","FRO","FJI","FIN","FRA","PYF","GAB","GMB","GEO","DEU","GHA","GRC","GRL","GRD","GTM","GIN","GNB","GUY","HTI","HND","HKG","HUN","ISL","IND","IDN","IRN","IRQ","IRL","ISR","ITA","JAM","JPN","JOR","KAZ","KEN","KIR","KOR","KWT","KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE","LTU","LUX","MAC","MKD","MDG","MWI","MYS","MDV","MLI","MLT","MHL","MRT","MUS","MEX","FSM","MDA","MCO","MNG","MNE","MAR","MOZ","NAM","NPL","NLD","NZL","NIC","NER","NGA","NOR","OMN","PAK","PLW","PAN","PNG","PRY","PER","PHL","POL","PRT","PRI","QAT","ROU","RUS","RWA","KNA","LCA","VCT","WSM","SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP","SVK","SVN","SLB","ZAF","ESP","LKA","SDN","SUR","SWZ","SWE","CHE","SYR","TJK","TZA","THA","TLS","TGO","TON","TTO","TUN","TUR","TKM","TUV","UGA","UKR","ARE","GBR","USA","URY","UZB","VUT","VEN","VNM","PSE","YEM","ZMB","ZWE"],"z":[3.6499999999999999,44.990000000000002,12.5,81,10,80.650000000000006,36,44,41.799999999999997,75.900000000000006,72.730000000000004,46.68,42.979999999999997,54.990000000000002,3.7000000000000002,70.030000000000001,32.049999999999997,73.730000000000004,12.65,3.1299999999999999,84.650000000000006,13.6,20,52,6,40.649999999999999,49.990000000000002,45.990000000000002,1.3999999999999999,2.1000000000000001,1.26,4,81.340000000000003,30,66,2.2999999999999998,1.7,45,34.380000000000003,36.5,5.0999999999999996,0.71999999999999997,5,36.5,2.6000000000000001,60.119999999999997,15.9,53.020000000000003,68.640000000000001,88.769999999999996,6.5,47.280000000000001,39.530000000000001,29,26.739999999999998,15.9,6,5.4000000000000004,74.159999999999997,0.75,75.200000000000003,14.83,86.900000000000006,77.5,48.960000000000001,7.2300000000000004,9.1999999999999993,26.300000000000001,82.530000000000001,9.5500000000000007,44.57,63.850000000000001,33.619999999999997,10.5,1,2.4500000000000002,29.879999999999999,8.3699999999999992,11.09,71.849999999999994,65.159999999999997,95.640000000000001,7.5,9.9000000000000004,13,2.4700000000000002,69.769999999999996,65.390000000000001,53.740000000000002,26.48,77.640000000000001,38.880000000000003,33.380000000000003,25.899999999999999,8.9600000000000009,82.519999999999996,38.259999999999998,19.579999999999998,7,71.510000000000005,31,3.8599999999999999,7,14,80,62.810000000000002,90.079999999999998,56.759999999999998,51.909999999999997,1.7,2.2599999999999998,56.299999999999997,28.289999999999999,2.7000000000000002,63.079999999999998,36.420000000000002,3,28.73,31.050000000000001,20.010000000000002,40.119999999999997,41.799999999999997,12.9,51.960000000000001,49,4.1699999999999999,6.5,7.9299999999999997,90.700000000000003,83,10,0.82999999999999996,28.43,93.280000000000001,61.990000000000002,16.780000000000001,18.800000000000001,42.75,1.28,19.800000000000001,34.299999999999997,25,62.469999999999999,51.280000000000001,42.689999999999998,81.590000000000003,40.020000000000003,43.369999999999997,13,76.590000000000003,40.060000000000002,41.799999999999997,6.9699999999999998,38.259999999999998,18.800000000000001,41,16,43.060000000000002,40.770000000000003,48.960000000000001,71.129999999999995,79.890000000000001,69.340000000000003,5,12.33,65.810000000000002,12,44.990000000000002,31.57,9.0099999999999998,90.019999999999996,82.170000000000002,20.66,11.550000000000001,11,21.199999999999999,0.20999999999999999,5.3799999999999999,12.01,48.520000000000003,36.560000000000002,39.82,2.2000000000000002,25,12.5,44.590000000000003,78,84.730000000000004,74.25,47.869999999999997,19.449999999999999,7.9900000000000002,35.850000000000001,27.850000000000001,36.420000000000002,12.35,10.119999999999999,11.5],"zmin":0,"zmax":95.640000000000001,"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Afghanistan<br />3.65","Albania<br />44.99","Algeria<br />12.5","Andorra<br />81","Angola<br />10","Antigua and Barbuda<br />80.65","Argentina<br />36","Armenia<br />44","Aruba<br />41.8","Australia<br />75.9","Austria<br />72.73","Azerbaijan<br />46.68","Bahamas<br />42.98","Bahrain<br />54.99","Bangladesh<br />3.7","Barbados<br />70.03","Belarus<br />32.05","Belgium<br />73.73","Belize<br />12.65","Benin<br />3.13","Bermuda<br />84.65","Bhutan<br />13.6","Bolivia<br />20","Bosnia and Herzegovina<br />52","Botswana<br />6","Brazil<br />40.65","Brunei<br />49.99","Bulgaria<br />45.99","Burkina Faso<br />1.4","Burundi<br />2.1","Cambodia<br />1.26","Cameroon<br />4","Canada<br />81.34","Cape Verde<br />30","Cayman Islands<br />66","Central African Rep.<br />2.3","Chad<br />1.7","Chile<br />45","China<br />34.38","Colombia<br />36.5","Comoros<br />5.1","Congo, Dem. Rep.<br />0.72","Congo, Rep.<br />5","Costa Rica<br />36.5","Cote d'Ivoire<br />2.6","Croatia<br />60.12","Cuba<br />15.9","Cyprus<br />53.02","Czech Rep.<br />68.64","Denmark<br />88.77","Djibouti<br />6.5","Dominica<br />47.28","Dominican Rep.<br />39.53","Ecuador<br />29","Egypt<br />26.74","El Salvador<br />15.9","Equatorial Guinea<br />6","Eritrea<br />5.4","Estonia<br />74.16","Ethiopia<br />0.75","Faeroe Islands<br />75.2","Fiji<br />14.83","Finland<br />86.9","France<br />77.5","French Polynesia<br />48.96","Gabon<br />7.23","Gambia<br />9.2","Georgia<br />26.3","Germany<br />82.53","Ghana<br />9.55","Greece<br />44.57","Greenland<br />63.85","Grenada<br />33.62","Guatemala<br />10.5","Guinea<br />1","Guinea-Bissau<br />2.45","Guyana<br />29.88","Haiti<br />8.37","Honduras<br />11.09","Hong Kong, China<br />71.85","Hungary<br />65.16","Iceland<br />95.64","India<br />7.5","Indonesia<br />9.9","Iran<br />13","Iraq<br />2.47","Ireland<br />69.77","Israel<br />65.39","Italy<br />53.74","Jamaica<br />26.48","Japan<br />77.64","Jordan<br />38.88","Kazakhstan<br />33.38","Kenya<br />25.9","Kiribati<br />8.96","Korea, Rep.<br />82.52","Kuwait<br />38.26","Kyrgyzstan<br />19.58","Laos<br />7","Latvia<br />71.51","Lebanon<br />31","Lesotho<br />3.86","Liberia<br />7","Libya<br />14","Liechtenstein<br />80","Lithuania<br />62.81","Luxembourg<br />90.08","Macao, China<br />56.76","Macedonia, FYR<br />51.91","Madagascar<br />1.7","Malawi<br />2.26","Malaysia<br />56.3","Maldives<br />28.29","Mali<br />2.7","Malta<br />63.08","Marshall Islands<br />36.42","Mauritania<br />3","Mauritius<br />28.73","Mexico<br />31.05","Micronesia, Fed. Sts.<br />20.01","Moldova<br />40.12","Monaco<br />41.8","Mongolia<br />12.9","Montenegro<br />51.96","Morocco<br />49","Mozambique<br />4.17","Namibia<br />6.5","Nepal<br />7.93","Netherlands<br />90.7","New Zealand<br />83","Nicaragua<br />10","Niger<br />0.83","Nigeria<br />28.43","Norway<br />93.28","Oman<br />61.99","Pakistan<br />16.78","Palau<br />18.8","Panama<br />42.75","Papua New Guinea<br />1.28","Paraguay<br />19.8","Peru<br />34.3","Philippines<br />25","Poland<br />62.47","Portugal<br />51.28","Puerto Rico<br />42.69","Qatar<br />81.59","Romania<br />40.02","Russia<br />43.37","Rwanda<br />13","Saint Kitts and Nevis<br />76.59","Saint Lucia<br />40.06","Saint Vincent and the Grenadines<br />41.8","Samoa<br />6.97","San Marino<br />38.26","Sao Tome and Principe<br />18.8","Saudi Arabia<br />41","Senegal<br />16","Serbia<br />43.06","Seychelles<br />40.77","Sierra Leone<br />48.96","Singapore<br />71.13","Slovak Republic<br />79.89","Slovenia<br />69.34","Solomon Islands<br />5","South Africa<br />12.33","Spain<br />65.81","Sri Lanka<br />12","Sudan<br />44.99","Suriname<br />31.57","Swaziland<br />9.01","Sweden<br />90.02","Switzerland<br />82.17","Syria<br />20.66","Tajikistan<br />11.55","Tanzania<br />11","Thailand<br />21.2","Timor-Leste<br />0.21","Togo<br />5.38","Tonga<br />12.01","Trinidad and Tobago<br />48.52","Tunisia<br />36.56","Turkey<br />39.82","Turkmenistan<br />2.2","Tuvalu<br />25","Uganda<br />12.5","Ukraine<br />44.59","United Arab Emirates<br />78","United Kingdom<br />84.73","United States<br />74.25","Uruguay<br />47.87","Uzbekistan<br />19.45","Vanuatu<br />7.99","Venezuela<br />35.85","Vietnam<br />27.85","West Bank and Gaza<br />36.42","Yemen, Rep.<br />12.35","Zambia<br />10.12","Zimbabwe<br />11.5"],"visible":false,"type":"choropleth","marker":{"line":{"colorbar":{"title":"","ticklen":2},"cmin":0.20999999999999999,"cmax":105147.44,"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"color":[3.6499999999999999,44.990000000000002,12.5,81,10,80.650000000000006,36,44,41.799999999999997,75.900000000000006,72.730000000000004,46.68,42.979999999999997,54.990000000000002,3.7000000000000002,70.030000000000001,32.049999999999997,73.730000000000004,12.65,3.1299999999999999,84.650000000000006,13.6,20,52,6,40.649999999999999,49.990000000000002,45.990000000000002,1.3999999999999999,2.1000000000000001,1.26,4,81.340000000000003,30,66,2.2999999999999998,1.7,45,34.380000000000003,36.5,5.0999999999999996,0.71999999999999997,5,36.5,2.6000000000000001,60.119999999999997,15.9,53.020000000000003,68.640000000000001,88.769999999999996,6.5,47.280000000000001,39.530000000000001,29,26.739999999999998,15.9,6,5.4000000000000004,74.159999999999997,0.75,75.200000000000003,14.83,86.900000000000006,77.5,48.960000000000001,7.2300000000000004,9.1999999999999993,26.300000000000001,82.530000000000001,9.5500000000000007,44.57,63.850000000000001,33.619999999999997,10.5,1,2.4500000000000002,29.879999999999999,8.3699999999999992,11.09,71.849999999999994,65.159999999999997,95.640000000000001,7.5,9.9000000000000004,13,2.4700000000000002,69.769999999999996,65.390000000000001,53.740000000000002,26.48,77.640000000000001,38.880000000000003,33.380000000000003,25.899999999999999,8.9600000000000009,82.519999999999996,38.259999999999998,19.579999999999998,7,71.510000000000005,31,3.8599999999999999,7,14,80,62.810000000000002,90.079999999999998,56.759999999999998,51.909999999999997,1.7,2.2599999999999998,56.299999999999997,28.289999999999999,2.7000000000000002,63.079999999999998,36.420000000000002,3,28.73,31.050000000000001,20.010000000000002,40.119999999999997,41.799999999999997,12.9,51.960000000000001,49,4.1699999999999999,6.5,7.9299999999999997,90.700000000000003,83,10,0.82999999999999996,28.43,93.280000000000001,61.990000000000002,16.780000000000001,18.800000000000001,42.75,1.28,19.800000000000001,34.299999999999997,25,62.469999999999999,51.280000000000001,42.689999999999998,81.590000000000003,40.020000000000003,43.369999999999997,13,76.590000000000003,40.060000000000002,41.799999999999997,6.9699999999999998,38.259999999999998,18.800000000000001,41,16,43.060000000000002,40.770000000000003,48.960000000000001,71.129999999999995,79.890000000000001,69.340000000000003,5,12.33,65.810000000000002,12,44.990000000000002,31.57,9.0099999999999998,90.019999999999996,82.170000000000002,20.66,11.550000000000001,11,21.199999999999999,0.20999999999999999,5.3799999999999999,12.01,48.520000000000003,36.560000000000002,39.82,2.2000000000000002,25,12.5,44.590000000000003,78,84.730000000000004,74.25,47.869999999999997,19.449999999999999,7.9900000000000002,35.850000000000001,27.850000000000001,36.420000000000002,12.35,10.119999999999999,11.5]},"showscale":false},"geo":"geo","frame":null},{"colorbar":{"title":"incomeperperson<br />internetuserate<br />urbanrate","ticklen":2,"len":0.25,"lenmode":"fraction","y":0.5,"yanchor":"top"},"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"locations":["AFG","ALB","DZA","AND","AGO","ATG","ARG","ARM","ABW","AUS","AUT","AZE","BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BIH","BWA","BRA","BRN","BGR","BFA","BDI","KHM","CMR","CAN","CPV","CYM","CAF","TCD","CHL","CHN","COL","COM","COD","COG","CRI","CIV","HRV","CUB","CYP","CZE","DNK","DJI","DMA","DOM","ECU","EGY","SLV","GNQ","ERI","EST","ETH","FRO","FJI","FIN","FRA","PYF","GAB","GMB","GEO","DEU","GHA","GRC","GRL","GRD","GTM","GIN","GNB","GUY","HTI","HND","HKG","HUN","ISL","IND","IDN","IRN","IRQ","IRL","ISR","ITA","JAM","JPN","JOR","KAZ","KEN","KIR","KOR","KWT","KGZ","LAO","LVA","LBN","LSO","LBR","LBY","LIE","LTU","LUX","MAC","MKD","MDG","MWI","MYS","MDV","MLI","MLT","MHL","MRT","MUS","MEX","FSM","MDA","MCO","MNG","MNE","MAR","MOZ","NAM","NPL","NLD","NZL","NIC","NER","NGA","NOR","OMN","PAK","PLW","PAN","PNG","PRY","PER","PHL","POL","PRT","PRI","QAT","ROU","RUS","RWA","KNA","LCA","VCT","WSM","SMR","STP","SAU","SEN","SRB","SYC","SLE","SGP","SVK","SVN","SLB","ZAF","ESP","LKA","SDN","SUR","SWZ","SWE","CHE","SYR","TJK","TZA","THA","TLS","TGO","TON","TTO","TUN","TUR","TKM","TUV","UGA","UKR","ARE","GBR","USA","URY","UZB","VUT","VEN","VNM","PSE","YEM","ZMB","ZWE"],"z":[24.039999999999999,46.719999999999999,65.219999999999999,88.920000000000002,56.700000000000003,30.460000000000001,92,63.859999999999999,46.780000000000001,88.739999999999995,67.159999999999997,51.920000000000002,83.700000000000003,88.519999999999996,27.140000000000001,39.840000000000003,73.459999999999994,97.359999999999999,51.700000000000003,41.200000000000003,100,34.479999999999997,65.579999999999998,47.439999999999998,59.579999999999998,85.579999999999998,74.819999999999993,71.099999999999994,19.559999999999999,10.4,21.559999999999999,56.759999999999998,80.400000000000006,59.619999999999997,100,38.579999999999998,26.68,88.439999999999998,43.100000000000001,74.5,28.079999999999998,33.960000000000001,61.340000000000003,63.259999999999998,48.780000000000001,57.280000000000001,75.659999999999997,69.900000000000006,73.5,86.680000000000007,87.299999999999997,73.920000000000002,69.019999999999996,65.579999999999998,42.719999999999999,60.700000000000003,39.380000000000003,20.719999999999999,69.459999999999994,17,41.420000000000002,52.359999999999999,63.299999999999997,77.359999999999999,51.640000000000001,85.040000000000006,56.420000000000002,52.740000000000002,73.640000000000001,50.020000000000003,61,83.519999999999996,30.84,48.579999999999998,34.439999999999998,29.84,28.379999999999999,46.840000000000003,47.880000000000003,100,67.5,92.260000000000005,29.539999999999999,51.460000000000001,68.459999999999994,66.599999999999994,61.340000000000003,91.659999999999997,68.079999999999998,53.299999999999997,66.480000000000004,78.420000000000002,57.939999999999998,21.600000000000001,43.840000000000003,81.459999999999994,98.359999999999999,36.280000000000001,30.879999999999999,68.120000000000005,86.959999999999994,25.460000000000001,60.140000000000001,77.540000000000006,14.32,66.959999999999994,82.439999999999998,100,66.900000000000006,29.52,18.800000000000001,70.359999999999999,37.859999999999999,32.18,94.260000000000005,71.079999999999998,41,42.479999999999997,77.200000000000003,22.539999999999999,41.759999999999998,100,57.18,60.18,56.020000000000003,36.840000000000003,36.840000000000003,17.239999999999998,81.819999999999993,86.560000000000002,56.740000000000002,16.539999999999999,48.359999999999999,77.480000000000004,71.620000000000005,36.159999999999997,80.459999999999994,73.200000000000003,12.539999999999999,60.299999999999997,71.400000000000006,64.920000000000002,61.32,59.460000000000001,98.319999999999993,95.640000000000001,54.240000000000002,72.840000000000003,18.34,32.32,27.84,47.039999999999999,23,94.219999999999999,60.560000000000002,82.420000000000002,42.380000000000003,52.039999999999999,54.340000000000003,37.759999999999998,100,56.560000000000002,48.600000000000001,17.960000000000001,60.740000000000002,77.120000000000005,15.1,43.439999999999998,74.920000000000002,24.940000000000001,84.540000000000006,73.480000000000004,54.219999999999999,26.460000000000001,25.52,33.32,27.300000000000001,42,24.780000000000001,13.220000000000001,66.5,68.680000000000007,48.619999999999997,60.560000000000002,12.98,67.980000000000004,77.879999999999995,89.939999999999998,81.700000000000003,92.299999999999997,36.82,24.760000000000002,93.319999999999993,27.84,71.900000000000006,30.640000000000001,35.420000000000002,37.340000000000003],"zmin":0,"zmax":100,"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Afghanistan<br />24.04%","Albania<br />46.72%","Algeria<br />65.22%","Andorra<br />88.92%","Angola<br />56.7%","Antigua and Barbuda<br />30.46%","Argentina<br />92%","Armenia<br />63.86%","Aruba<br />46.78%","Australia<br />88.74%","Austria<br />67.16%","Azerbaijan<br />51.92%","Bahamas<br />83.7%","Bahrain<br />88.52%","Bangladesh<br />27.14%","Barbados<br />39.84%","Belarus<br />73.46%","Belgium<br />97.36%","Belize<br />51.7%","Benin<br />41.2%","Bermuda<br />100%","Bhutan<br />34.48%","Bolivia<br />65.58%","Bosnia and Herzegovina<br />47.44%","Botswana<br />59.58%","Brazil<br />85.58%","Brunei<br />74.82%","Bulgaria<br />71.1%","Burkina Faso<br />19.56%","Burundi<br />10.4%","Cambodia<br />21.56%","Cameroon<br />56.76%","Canada<br />80.4%","Cape Verde<br />59.62%","Cayman Islands<br />100%","Central African Rep.<br />38.58%","Chad<br />26.68%","Chile<br />88.44%","China<br />43.1%","Colombia<br />74.5%","Comoros<br />28.08%","Congo, Dem. Rep.<br />33.96%","Congo, Rep.<br />61.34%","Costa Rica<br />63.26%","Cote d'Ivoire<br />48.78%","Croatia<br />57.28%","Cuba<br />75.66%","Cyprus<br />69.9%","Czech Rep.<br />73.5%","Denmark<br />86.68%","Djibouti<br />87.3%","Dominica<br />73.92%","Dominican Rep.<br />69.02%","Ecuador<br />65.58%","Egypt<br />42.72%","El Salvador<br />60.7%","Equatorial Guinea<br />39.38%","Eritrea<br />20.72%","Estonia<br />69.46%","Ethiopia<br />17%","Faeroe Islands<br />41.42%","Fiji<br />52.36%","Finland<br />63.3%","France<br />77.36%","French Polynesia<br />51.64%","Gabon<br />85.04%","Gambia<br />56.42%","Georgia<br />52.74%","Germany<br />73.64%","Ghana<br />50.02%","Greece<br />61%","Greenland<br />83.52%","Grenada<br />30.84%","Guatemala<br />48.58%","Guinea<br />34.44%","Guinea-Bissau<br />29.84%","Guyana<br />28.38%","Haiti<br />46.84%","Honduras<br />47.88%","Hong Kong, China<br />100%","Hungary<br />67.5%","Iceland<br />92.26%","India<br />29.54%","Indonesia<br />51.46%","Iran<br />68.46%","Iraq<br />66.6%","Ireland<br />61.34%","Israel<br />91.66%","Italy<br />68.08%","Jamaica<br />53.3%","Japan<br />66.48%","Jordan<br />78.42%","Kazakhstan<br />57.94%","Kenya<br />21.6%","Kiribati<br />43.84%","Korea, Rep.<br />81.46%","Kuwait<br />98.36%","Kyrgyzstan<br />36.28%","Laos<br />30.88%","Latvia<br />68.12%","Lebanon<br />86.96%","Lesotho<br />25.46%","Liberia<br />60.14%","Libya<br />77.54%","Liechtenstein<br />14.32%","Lithuania<br />66.96%","Luxembourg<br />82.44%","Macao, China<br />100%","Macedonia, FYR<br />66.9%","Madagascar<br />29.52%","Malawi<br />18.8%","Malaysia<br />70.36%","Maldives<br />37.86%","Mali<br />32.18%","Malta<br />94.26%","Marshall Islands<br />71.08%","Mauritania<br />41%","Mauritius<br />42.48%","Mexico<br />77.2%","Micronesia, Fed. Sts.<br />22.54%","Moldova<br />41.76%","Monaco<br />100%","Mongolia<br />57.18%","Montenegro<br />60.18%","Morocco<br />56.02%","Mozambique<br />36.84%","Namibia<br />36.84%","Nepal<br />17.24%","Netherlands<br />81.82%","New Zealand<br />86.56%","Nicaragua<br />56.74%","Niger<br />16.54%","Nigeria<br />48.36%","Norway<br />77.48%","Oman<br />71.62%","Pakistan<br />36.16%","Palau<br />80.46%","Panama<br />73.2%","Papua New Guinea<br />12.54%","Paraguay<br />60.3%","Peru<br />71.4%","Philippines<br />64.92%","Poland<br />61.32%","Portugal<br />59.46%","Puerto Rico<br />98.32%","Qatar<br />95.64%","Romania<br />54.24%","Russia<br />72.84%","Rwanda<br />18.34%","Saint Kitts and Nevis<br />32.32%","Saint Lucia<br />27.84%","Saint Vincent and the Grenadines<br />47.04%","Samoa<br />23%","San Marino<br />94.22%","Sao Tome and Principe<br />60.56%","Saudi Arabia<br />82.42%","Senegal<br />42.38%","Serbia<br />52.04%","Seychelles<br />54.34%","Sierra Leone<br />37.76%","Singapore<br />100%","Slovak Republic<br />56.56%","Slovenia<br />48.6%","Solomon Islands<br />17.96%","South Africa<br />60.74%","Spain<br />77.12%","Sri Lanka<br />15.1%","Sudan<br />43.44%","Suriname<br />74.92%","Swaziland<br />24.94%","Sweden<br />84.54%","Switzerland<br />73.48%","Syria<br />54.22%","Tajikistan<br />26.46%","Tanzania<br />25.52%","Thailand<br />33.32%","Timor-Leste<br />27.3%","Togo<br />42%","Tonga<br />24.78%","Trinidad and Tobago<br />13.22%","Tunisia<br />66.5%","Turkey<br />68.68%","Turkmenistan<br />48.62%","Tuvalu<br />60.56%","Uganda<br />12.98%","Ukraine<br />67.98%","United Arab Emirates<br />77.88%","United Kingdom<br />89.94%","United States<br />81.7%","Uruguay<br />92.3%","Uzbekistan<br />36.82%","Vanuatu<br />24.76%","Venezuela<br />93.32%","Vietnam<br />27.84%","West Bank and Gaza<br />71.9%","Yemen, Rep.<br />30.64%","Zambia<br />35.42%","Zimbabwe<br />37.34%"],"visible":false,"type":"choropleth","marker":{"line":{"colorbar":{"title":"","ticklen":2},"cmin":0.20999999999999999,"cmax":105147.44,"colorscale":[["0","rgba(247,251,255,1)"],["0.0416666666666667","rgba(239,246,252,1)"],["0.0833333333333333","rgba(230,240,250,1)"],["0.125","rgba(222,235,247,1)"],["0.166666666666667","rgba(214,230,244,1)"],["0.208333333333333","rgba(206,224,242,1)"],["0.25","rgba(198,219,239,1)"],["0.291666666666667","rgba(185,213,234,1)"],["0.333333333333333","rgba(172,208,230,1)"],["0.375","rgba(158,202,225,1)"],["0.416666666666667","rgba(142,193,221,1)"],["0.458333333333333","rgba(125,183,218,1)"],["0.5","rgba(107,174,214,1)"],["0.541666666666667","rgba(94,165,209,1)"],["0.583333333333333","rgba(81,155,203,1)"],["0.625","rgba(66,146,198,1)"],["0.666666666666667","rgba(57,135,192,1)"],["0.708333333333333","rgba(46,124,187,1)"],["0.75","rgba(33,113,181,1)"],["0.791666666666667","rgba(27,102,173,1)"],["0.833333333333333","rgba(19,91,164,1)"],["0.875","rgba(8,81,156,1)"],["0.916666666666667","rgba(9,70,139,1)"],["0.958333333333333","rgba(9,59,123,1)"],["1","rgba(8,48,107,1)"]],"showscale":false,"color":[24.039999999999999,46.719999999999999,65.219999999999999,88.920000000000002,56.700000000000003,30.460000000000001,92,63.859999999999999,46.780000000000001,88.739999999999995,67.159999999999997,51.920000000000002,83.700000000000003,88.519999999999996,27.140000000000001,39.840000000000003,73.459999999999994,97.359999999999999,51.700000000000003,41.200000000000003,100,34.479999999999997,65.579999999999998,47.439999999999998,59.579999999999998,85.579999999999998,74.819999999999993,71.099999999999994,19.559999999999999,10.4,21.559999999999999,56.759999999999998,80.400000000000006,59.619999999999997,100,38.579999999999998,26.68,88.439999999999998,43.100000000000001,74.5,28.079999999999998,33.960000000000001,61.340000000000003,63.259999999999998,48.780000000000001,57.280000000000001,75.659999999999997,69.900000000000006,73.5,86.680000000000007,87.299999999999997,73.920000000000002,69.019999999999996,65.579999999999998,42.719999999999999,60.700000000000003,39.380000000000003,20.719999999999999,69.459999999999994,17,41.420000000000002,52.359999999999999,63.299999999999997,77.359999999999999,51.640000000000001,85.040000000000006,56.420000000000002,52.740000000000002,73.640000000000001,50.020000000000003,61,83.519999999999996,30.84,48.579999999999998,34.439999999999998,29.84,28.379999999999999,46.840000000000003,47.880000000000003,100,67.5,92.260000000000005,29.539999999999999,51.460000000000001,68.459999999999994,66.599999999999994,61.340000000000003,91.659999999999997,68.079999999999998,53.299999999999997,66.480000000000004,78.420000000000002,57.939999999999998,21.600000000000001,43.840000000000003,81.459999999999994,98.359999999999999,36.280000000000001,30.879999999999999,68.120000000000005,86.959999999999994,25.460000000000001,60.140000000000001,77.540000000000006,14.32,66.959999999999994,82.439999999999998,100,66.900000000000006,29.52,18.800000000000001,70.359999999999999,37.859999999999999,32.18,94.260000000000005,71.079999999999998,41,42.479999999999997,77.200000000000003,22.539999999999999,41.759999999999998,100,57.18,60.18,56.020000000000003,36.840000000000003,36.840000000000003,17.239999999999998,81.819999999999993,86.560000000000002,56.740000000000002,16.539999999999999,48.359999999999999,77.480000000000004,71.620000000000005,36.159999999999997,80.459999999999994,73.200000000000003,12.539999999999999,60.299999999999997,71.400000000000006,64.920000000000002,61.32,59.460000000000001,98.319999999999993,95.640000000000001,54.240000000000002,72.840000000000003,18.34,32.32,27.84,47.039999999999999,23,94.219999999999999,60.560000000000002,82.420000000000002,42.380000000000003,52.039999999999999,54.340000000000003,37.759999999999998,100,56.560000000000002,48.600000000000001,17.960000000000001,60.740000000000002,77.120000000000005,15.1,43.439999999999998,74.920000000000002,24.940000000000001,84.540000000000006,73.480000000000004,54.219999999999999,26.460000000000001,25.52,33.32,27.300000000000001,42,24.780000000000001,13.220000000000001,66.5,68.680000000000007,48.619999999999997,60.560000000000002,12.98,67.980000000000004,77.879999999999995,89.939999999999998,81.700000000000003,92.299999999999997,36.82,24.760000000000002,93.319999999999993,27.84,71.900000000000006,30.640000000000001,35.420000000000002,37.340000000000003]},"showscale":false},"geo":"geo","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="checking-distribution-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="checking-distribution-of-data">6. <strong>Checking Distribution of Data</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Histogram <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(gapminder_internet, <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"lightgrey"</span>, <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"darkgrey"</span>,<span class="at">width =</span> <span class="dv">2</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x =</span> <span class="sc">~</span><span class="fu">log</span>(incomeperperson), <span class="at">type =</span> <span class="st">"histogram"</span>, <span class="at">histnorm =</span> <span class="st">"probability"</span>, <span class="at">name =</span> <span class="st">'Log income'</span>, <span class="at">visible =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x =</span> <span class="sc">~</span>internetuserate, <span class="at">type =</span> <span class="st">"histogram"</span>, <span class="at">histnorm =</span> <span class="st">"probability"</span>, <span class="at">visible =</span> <span class="cn">FALSE</span>, <span class="at">name =</span> <span class="st">'Internet User Rate'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_trace</span>(<span class="at">x =</span> <span class="sc">~</span>urbanrate, <span class="at">type =</span> <span class="st">"histogram"</span>, <span class="at">histnorm =</span> <span class="st">"probability"</span>, <span class="at">name =</span> <span class="st">'Urban Rates'</span>, <span class="at">visible =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>chart_types <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"buttons"</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">direction =</span> <span class="st">"right"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">xanchor =</span> <span class="st">'center'</span>,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">yanchor =</span> <span class="st">"top"</span>,</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">pad =</span> <span class="fu">list</span>(<span class="st">'r'</span> <span class="ot">=</span> <span class="dv">10</span>, <span class="st">'t'</span> <span class="ot">=</span> <span class="dv">10</span>, <span class="st">'b'</span> <span class="ot">=</span> <span class="dv">10</span>),</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fl">0.5</span>,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fl">1.15</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">buttons =</span> <span class="fu">list</span>(</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)),</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Income Per Person"</span>),</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)),</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Internet User Rates"</span>),</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">method =</span> <span class="st">"restyle"</span>,</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">args =</span> <span class="fu">list</span>(<span class="st">"visible"</span>, <span class="fu">list</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> <span class="st">"Urban Rates"</span>))</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>Histogram <span class="ot">&lt;-</span> Histogram <span class="sc">%&gt;%</span> <span class="fu">layout</span>(</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">domain =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>), <span class="at">title =</span> <span class="st">''</span>),</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">""</span>),</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">updatemenus =</span> <span class="fu">list</span>(chart_types),</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">"Histogram of Log Income, Internet User Rates, and Urban Rates"</span>, <span class="at">y =</span> <span class="fl">0.95</span>),</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">margin =</span> <span class="fu">list</span>(<span class="at">t =</span> <span class="dv">100</span>),</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">bargap =</span> <span class="fl">0.1</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>Histogram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-a165439bd222ccfba576" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-a165439bd222ccfba576">{"x":{"visdat":{"1e5f589163e":["function () ","plotlyVisDat"]},"cur_data":"1e5f589163e","attrs":{"1e5f589163e":{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"type":"histogram","histnorm":"probability","name":"Log income","visible":true,"inherit":true},"1e5f589163e.1":{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"type":"histogram","histnorm":"probability","visible":false,"name":"Internet User Rate","inherit":true},"1e5f589163e.2":{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"type":"histogram","histnorm":"probability","name":"Urban Rates","visible":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":100,"r":10},"xaxis":{"domain":[0.10000000000000001,1],"automargin":true,"title":""},"yaxis":{"domain":[0,1],"automargin":true,"title":""},"updatemenus":[{"type":"buttons","direction":"right","xanchor":"center","yanchor":"top","pad":{"r":10,"t":10,"b":10},"x":0.5,"y":1.1499999999999999,"buttons":[{"method":"restyle","args":["visible",[true,false,false]],"label":"Income Per Person"},{"method":"restyle","args":["visible",[false,true,false]],"label":"Internet User Rates"},{"method":"restyle","args":["visible",[false,false,true]],"label":"Urban Rates"}]}],"title":{"text":"Histogram of Log Income, Internet User Rates, and Urban Rates","y":0.94999999999999996},"bargap":0.10000000000000001,"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"x":[6.3244664834824302,7.5574729016147462,7.7106488432044262,9.9962189556066186,7.2305631534092925,9.383828024480847,9.2826070786118944,7.1904800844646006,7.2305631534092925,10.136581038663824,10.192155888470149,7.7599980360478611,9.8848417958070698,9.4339006364534015,6.3244664834824302,9.1316856173167444,7.9148624726532235,10.106267159044958,8.1734767789990368,5.9323512826154756,11.045831997094192,7.1885562307328854,7.1170351723571725,7.6886110933916409,8.3403223524327057,8.4551922479034669,9.7463927095775169,7.843676074244569,5.621125240975192,4.7476241537830246,6.3242693526317106,6.5703786335065022,10.149384275965676,7.5806181162393749,10.390097222591852,5.4786369206713186,5.6199659885630906,8.7537045935407782,7.7937805990249824,8.0812956795878517,5.8182117445739037,4.642273273939594,7.1335273726500343,8.5542770076460997,6.3819344537086558,8.7543958487172073,8.4107320703143778,9.6365135796696766,8.9067064086171222,10.326539763582455,6.7971811962714233,8.7238463200234282,8.3062672008262624,7.4547315233710956,7.5886021195792406,7.8467581269722197,9.0658393177287859,4.8812856220684067,8.7385014596282282,5.3976648400487353,9.1316856173167444,7.7100617507070526,10.207684869463264,10.037951572628423,7.6886110933916409,8.3382507190804418,5.870990393640108,7.1378823883904907,10.13880430882187,5.8832666766299955,9.5161972769966443,9.9403926058482668,8.5811815612483269,7.5287349112400204,6.0198090201171244,5.0833899700051672,7.0906183557943239,5.9173334977649068,7.2387913377557922,10.478303515965678,8.6365749484363175,10.432505979114138,6.667846981335197,7.04213755949886,7.678580835924345,6.6015968992827512,10.225393137328693,10.011253921805856,9.8512606645909635,8.2066791077147272,10.579220990142201,7.837554360881084,7.8167071471525853,6.1499629049286604,6.6336604800388717,9.7033583770922078,8.6176464863372253,5.9208542969404299,6.318751874152122,8.5194346774084906,8.8167954354885332,6.2060314236713321,5.0436186465782704,8.9727771044691682,11.310161580315309,8.5815266915384356,10.864782051120534,10.431857667692142,7.7057983672863655,5.4917437030740972,5.2156963378596997,8.5534691885305065,8.3037177529176098,5.5980144685780218,9.3117031071478866,7.7986379423883907,6.412031709625774,8.5529733773530232,8.7169092495389453,7.6715286630823787,6.3900225224681781,11.563118834662339,6.6501884882126987,7.7063159737954585,7.5198821908781266,5.9655311650814777,7.8888032580715706,5.5919566594739445,10.186854327470236,9.6009056941948412,6.8547341770048842,5.1934011965984768,6.3000515802396588,10.595943244072636,9.3229375397894927,6.505111188060674,8.7393074131524759,8.6828127091185578,6.6123635634603035,7.3909095581372242,8.0647716867585917,7.232299516166484,8.7911439189817209,9.3711684227439012,9.6691636079020107,10.432108790895034,7.8773175472322325,7.9804136599615321,5.8238443931669197,9.1243248625821334,8.5657128428099121,8.4939347998390353,7.4866525500383387,10.37327865920054,7.3909095581372242,9.1511560249658608,6.330985702477653,7.0856587570903153,9.0611579963273314,5.5922175663130469,10.390097222591852,9.0413925863016456,9.4516734855905948,7.0423735807068981,8.228350445643704,9.6461251578352343,7.1668372395019304,6.2613962599209509,7.8890919032592919,7.5012091880101357,10.382589664767123,10.536426821318949,7.330261033692385,5.6318567350846118,6.1233477071431475,7.9056333710934217,5.9123401676419922,5.6532608123086208,7.6134632415869401,9.2573021990889188,8.0598862174300603,8.5845901234022897,7.6314947081764251,7.447133373565296,5.9333586257009499,6.9439232603645813,9.9564305104802155,10.241155145862331,10.531860984294644,9.116725055079943,6.8594365036915077,7.3421058235133847,8.6176464863372253,6.5831463937081471,8.0647716867585917,6.4140489470235345,6.0689578539729787,5.7707243554099694],"type":"histogram","histnorm":"probability","name":"Log income","visible":true,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"x":[3.6499999999999999,44.990000000000002,12.5,81,10,80.650000000000006,36,44,41.799999999999997,75.900000000000006,72.730000000000004,46.68,42.979999999999997,54.990000000000002,3.7000000000000002,70.030000000000001,32.049999999999997,73.730000000000004,12.65,3.1299999999999999,84.650000000000006,13.6,20,52,6,40.649999999999999,49.990000000000002,45.990000000000002,1.3999999999999999,2.1000000000000001,1.26,4,81.340000000000003,30,66,2.2999999999999998,1.7,45,34.380000000000003,36.5,5.0999999999999996,0.71999999999999997,5,36.5,2.6000000000000001,60.119999999999997,15.9,53.020000000000003,68.640000000000001,88.769999999999996,6.5,47.280000000000001,39.530000000000001,29,26.739999999999998,15.9,6,5.4000000000000004,74.159999999999997,0.75,75.200000000000003,14.83,86.900000000000006,77.5,48.960000000000001,7.2300000000000004,9.1999999999999993,26.300000000000001,82.530000000000001,9.5500000000000007,44.57,63.850000000000001,33.619999999999997,10.5,1,2.4500000000000002,29.879999999999999,8.3699999999999992,11.09,71.849999999999994,65.159999999999997,95.640000000000001,7.5,9.9000000000000004,13,2.4700000000000002,69.769999999999996,65.390000000000001,53.740000000000002,26.48,77.640000000000001,38.880000000000003,33.380000000000003,25.899999999999999,8.9600000000000009,82.519999999999996,38.259999999999998,19.579999999999998,7,71.510000000000005,31,3.8599999999999999,7,14,80,62.810000000000002,90.079999999999998,56.759999999999998,51.909999999999997,1.7,2.2599999999999998,56.299999999999997,28.289999999999999,2.7000000000000002,63.079999999999998,36.420000000000002,3,28.73,31.050000000000001,20.010000000000002,40.119999999999997,41.799999999999997,12.9,51.960000000000001,49,4.1699999999999999,6.5,7.9299999999999997,90.700000000000003,83,10,0.82999999999999996,28.43,93.280000000000001,61.990000000000002,16.780000000000001,18.800000000000001,42.75,1.28,19.800000000000001,34.299999999999997,25,62.469999999999999,51.280000000000001,42.689999999999998,81.590000000000003,40.020000000000003,43.369999999999997,13,76.590000000000003,40.060000000000002,41.799999999999997,6.9699999999999998,38.259999999999998,18.800000000000001,41,16,43.060000000000002,40.770000000000003,48.960000000000001,71.129999999999995,79.890000000000001,69.340000000000003,5,12.33,65.810000000000002,12,44.990000000000002,31.57,9.0099999999999998,90.019999999999996,82.170000000000002,20.66,11.550000000000001,11,21.199999999999999,0.20999999999999999,5.3799999999999999,12.01,48.520000000000003,36.560000000000002,39.82,2.2000000000000002,25,12.5,44.590000000000003,78,84.730000000000004,74.25,47.869999999999997,19.449999999999999,7.9900000000000002,35.850000000000001,27.850000000000001,36.420000000000002,12.35,10.119999999999999,11.5],"type":"histogram","histnorm":"probability","visible":false,"name":"Internet User Rate","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"marker":{"color":"lightgrey","line":{"color":"darkgrey","width":2}},"x":[24.039999999999999,46.719999999999999,65.219999999999999,88.920000000000002,56.700000000000003,30.460000000000001,92,63.859999999999999,46.780000000000001,88.739999999999995,67.159999999999997,51.920000000000002,83.700000000000003,88.519999999999996,27.140000000000001,39.840000000000003,73.459999999999994,97.359999999999999,51.700000000000003,41.200000000000003,100,34.479999999999997,65.579999999999998,47.439999999999998,59.579999999999998,85.579999999999998,74.819999999999993,71.099999999999994,19.559999999999999,10.4,21.559999999999999,56.759999999999998,80.400000000000006,59.619999999999997,100,38.579999999999998,26.68,88.439999999999998,43.100000000000001,74.5,28.079999999999998,33.960000000000001,61.340000000000003,63.259999999999998,48.780000000000001,57.280000000000001,75.659999999999997,69.900000000000006,73.5,86.680000000000007,87.299999999999997,73.920000000000002,69.019999999999996,65.579999999999998,42.719999999999999,60.700000000000003,39.380000000000003,20.719999999999999,69.459999999999994,17,41.420000000000002,52.359999999999999,63.299999999999997,77.359999999999999,51.640000000000001,85.040000000000006,56.420000000000002,52.740000000000002,73.640000000000001,50.020000000000003,61,83.519999999999996,30.84,48.579999999999998,34.439999999999998,29.84,28.379999999999999,46.840000000000003,47.880000000000003,100,67.5,92.260000000000005,29.539999999999999,51.460000000000001,68.459999999999994,66.599999999999994,61.340000000000003,91.659999999999997,68.079999999999998,53.299999999999997,66.480000000000004,78.420000000000002,57.939999999999998,21.600000000000001,43.840000000000003,81.459999999999994,98.359999999999999,36.280000000000001,30.879999999999999,68.120000000000005,86.959999999999994,25.460000000000001,60.140000000000001,77.540000000000006,14.32,66.959999999999994,82.439999999999998,100,66.900000000000006,29.52,18.800000000000001,70.359999999999999,37.859999999999999,32.18,94.260000000000005,71.079999999999998,41,42.479999999999997,77.200000000000003,22.539999999999999,41.759999999999998,100,57.18,60.18,56.020000000000003,36.840000000000003,36.840000000000003,17.239999999999998,81.819999999999993,86.560000000000002,56.740000000000002,16.539999999999999,48.359999999999999,77.480000000000004,71.620000000000005,36.159999999999997,80.459999999999994,73.200000000000003,12.539999999999999,60.299999999999997,71.400000000000006,64.920000000000002,61.32,59.460000000000001,98.319999999999993,95.640000000000001,54.240000000000002,72.840000000000003,18.34,32.32,27.84,47.039999999999999,23,94.219999999999999,60.560000000000002,82.420000000000002,42.380000000000003,52.039999999999999,54.340000000000003,37.759999999999998,100,56.560000000000002,48.600000000000001,17.960000000000001,60.740000000000002,77.120000000000005,15.1,43.439999999999998,74.920000000000002,24.940000000000001,84.540000000000006,73.480000000000004,54.219999999999999,26.460000000000001,25.52,33.32,27.300000000000001,42,24.780000000000001,13.220000000000001,66.5,68.680000000000007,48.619999999999997,60.560000000000002,12.98,67.980000000000004,77.879999999999995,89.939999999999998,81.700000000000003,92.299999999999997,36.82,24.760000000000002,93.319999999999993,27.84,71.900000000000006,30.640000000000001,35.420000000000002,37.340000000000003],"type":"histogram","histnorm":"probability","name":"Urban Rates","visible":false,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="top-10-gdp-per-capita" class="level3">
+<h3 class="anchored" data-anchor-id="top-10-gdp-per-capita">7. Top 10 GDP per Capita</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>gapminder_internet <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(incomeperperson)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_ly</span>(<span class="at">x=</span> <span class="sc">~</span>incomeperperson, <span class="at">y=</span> <span class="sc">~</span>country, <span class="at">type =</span> <span class="st">'bar'</span>, <span class="at">orientation =</span> <span class="st">'h'</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">'rgb(158,202,225)'</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">'rgb(8,48,107)'</span>, <span class="at">width =</span> <span class="fl">1.5</span>)),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste0</span>(<span class="st">'$'</span>,incomeperperson), <span class="at">textposition =</span> <span class="st">'auto'</span>, <span class="at">hoverinfo =</span> <span class="st">'text'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">yaxis =</span> <span class="fu">list</span>(<span class="at">categoryorder =</span> <span class="st">"total ascending"</span>),</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">'Top 10 Countries by Income Per Person'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-16dc6eeb7b1fc5202fe9" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-16dc6eeb7b1fc5202fe9">{"x":{"visdat":{"1e5f3da662e3":["function () ","plotlyVisDat"]},"cur_data":"1e5f3da662e3","attrs":{"1e5f3da662e3":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgb(158,202,225)","line":{"color":"rgb(8,48,107)","width":1.5}},"text":{},"textposition":"auto","hoverinfo":"text","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"categoryorder":"total ascending","title":"country","type":"category","categoryarray":["Bermuda","Hong Kong, China","Iceland","Japan","Liechtenstein","Luxembourg","Monaco","Norway","Switzerland","United States"]},"title":"Top 10 Countries by Income Per Person","xaxis":{"domain":[0,1],"automargin":true,"title":"incomeperperson"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[105147.44,81647.100000000006,62682.150000000001,52301.589999999997,39972.349999999999,39309.480000000003,37662.75,37491.18,35536.07,33945.309999999998],"y":["Monaco","Liechtenstein","Bermuda","Luxembourg","Norway","Japan","Switzerland","United States","Hong Kong, China","Iceland"],"orientation":"h","marker":{"color":"rgb(158,202,225)","line":{"color":"rgb(8,48,107)","width":1.5}},"text":["$105147.44","$81647.1","$62682.15","$52301.59","$39972.35","$39309.48","$37662.75","$37491.18","$35536.07","$33945.31"],"textposition":["auto","auto","auto","auto","auto","auto","auto","auto","auto","auto"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text"],"type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="correlation-between-gdp-per-capita" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-between-gdp-per-capita">8. <strong>Correlation between GDP per Capita</strong></h3>
+<p>Took the natural log of income to scale our data points.</p>
+</section>
+<section id="income-vs-urban-rates" class="level3">
+<h3 class="anchored" data-anchor-id="income-vs-urban-rates"><strong>Income vs Urban Rates</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">data =</span> gapminder_internet, <span class="at">x =</span> <span class="sc">~</span>urbanrate, <span class="at">y =</span> <span class="sc">~</span><span class="fu">log</span>(incomeperperson), <span class="at">hoverinfo =</span> <span class="st">'text'</span>,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste</span>(<span class="st">"Urban Rate:"</span>, urbanrate, <span class="st">'&lt;br&gt;Income Per Person:'</span>, incomeperperson, <span class="st">'&lt;br&gt; Country:'</span>, country),</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> <span class="st">'dodgerblue'</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">'black'</span>,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">width =</span> <span class="fl">1.5</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">'ScatterPlot of Log _ Income vs Urban Rate, R = 0.7093'</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>fig2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -&gt; https://plotly.com/r/reference/#scatter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -&gt; https://plotly.com/r/reference/#scatter-mode</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-8fe1e58804ab436e5706" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-8fe1e58804ab436e5706">{"x":{"visdat":{"1e5f1de880a0":["function () ","plotlyVisDat"]},"cur_data":"1e5f1de880a0","attrs":{"1e5f1de880a0":{"x":{},"y":{},"hoverinfo":"text","text":{},"marker":{"size":8,"color":"dodgerblue","line":{"color":"black","width":1.5}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"ScatterPlot of Log _ Income vs Urban Rate, R = 0.7093","xaxis":{"domain":[0,1],"automargin":true,"title":"urbanrate"},"yaxis":{"domain":[0,1],"automargin":true,"title":"log(incomeperperson)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[24.039999999999999,46.719999999999999,65.219999999999999,88.920000000000002,56.700000000000003,30.460000000000001,92,63.859999999999999,46.780000000000001,88.739999999999995,67.159999999999997,51.920000000000002,83.700000000000003,88.519999999999996,27.140000000000001,39.840000000000003,73.459999999999994,97.359999999999999,51.700000000000003,41.200000000000003,100,34.479999999999997,65.579999999999998,47.439999999999998,59.579999999999998,85.579999999999998,74.819999999999993,71.099999999999994,19.559999999999999,10.4,21.559999999999999,56.759999999999998,80.400000000000006,59.619999999999997,100,38.579999999999998,26.68,88.439999999999998,43.100000000000001,74.5,28.079999999999998,33.960000000000001,61.340000000000003,63.259999999999998,48.780000000000001,57.280000000000001,75.659999999999997,69.900000000000006,73.5,86.680000000000007,87.299999999999997,73.920000000000002,69.019999999999996,65.579999999999998,42.719999999999999,60.700000000000003,39.380000000000003,20.719999999999999,69.459999999999994,17,41.420000000000002,52.359999999999999,63.299999999999997,77.359999999999999,51.640000000000001,85.040000000000006,56.420000000000002,52.740000000000002,73.640000000000001,50.020000000000003,61,83.519999999999996,30.84,48.579999999999998,34.439999999999998,29.84,28.379999999999999,46.840000000000003,47.880000000000003,100,67.5,92.260000000000005,29.539999999999999,51.460000000000001,68.459999999999994,66.599999999999994,61.340000000000003,91.659999999999997,68.079999999999998,53.299999999999997,66.480000000000004,78.420000000000002,57.939999999999998,21.600000000000001,43.840000000000003,81.459999999999994,98.359999999999999,36.280000000000001,30.879999999999999,68.120000000000005,86.959999999999994,25.460000000000001,60.140000000000001,77.540000000000006,14.32,66.959999999999994,82.439999999999998,100,66.900000000000006,29.52,18.800000000000001,70.359999999999999,37.859999999999999,32.18,94.260000000000005,71.079999999999998,41,42.479999999999997,77.200000000000003,22.539999999999999,41.759999999999998,100,57.18,60.18,56.020000000000003,36.840000000000003,36.840000000000003,17.239999999999998,81.819999999999993,86.560000000000002,56.740000000000002,16.539999999999999,48.359999999999999,77.480000000000004,71.620000000000005,36.159999999999997,80.459999999999994,73.200000000000003,12.539999999999999,60.299999999999997,71.400000000000006,64.920000000000002,61.32,59.460000000000001,98.319999999999993,95.640000000000001,54.240000000000002,72.840000000000003,18.34,32.32,27.84,47.039999999999999,23,94.219999999999999,60.560000000000002,82.420000000000002,42.380000000000003,52.039999999999999,54.340000000000003,37.759999999999998,100,56.560000000000002,48.600000000000001,17.960000000000001,60.740000000000002,77.120000000000005,15.1,43.439999999999998,74.920000000000002,24.940000000000001,84.540000000000006,73.480000000000004,54.219999999999999,26.460000000000001,25.52,33.32,27.300000000000001,42,24.780000000000001,13.220000000000001,66.5,68.680000000000007,48.619999999999997,60.560000000000002,12.98,67.980000000000004,77.879999999999995,89.939999999999998,81.700000000000003,92.299999999999997,36.82,24.760000000000002,93.319999999999993,27.84,71.900000000000006,30.640000000000001,35.420000000000002,37.340000000000003],"y":[6.3244664834824302,7.5574729016147462,7.7106488432044262,9.9962189556066186,7.2305631534092925,9.383828024480847,9.2826070786118944,7.1904800844646006,7.2305631534092925,10.136581038663824,10.192155888470149,7.7599980360478611,9.8848417958070698,9.4339006364534015,6.3244664834824302,9.1316856173167444,7.9148624726532235,10.106267159044958,8.1734767789990368,5.9323512826154756,11.045831997094192,7.1885562307328854,7.1170351723571725,7.6886110933916409,8.3403223524327057,8.4551922479034669,9.7463927095775169,7.843676074244569,5.621125240975192,4.7476241537830246,6.3242693526317106,6.5703786335065022,10.149384275965676,7.5806181162393749,10.390097222591852,5.4786369206713186,5.6199659885630906,8.7537045935407782,7.7937805990249824,8.0812956795878517,5.8182117445739037,4.642273273939594,7.1335273726500343,8.5542770076460997,6.3819344537086558,8.7543958487172073,8.4107320703143778,9.6365135796696766,8.9067064086171222,10.326539763582455,6.7971811962714233,8.7238463200234282,8.3062672008262624,7.4547315233710956,7.5886021195792406,7.8467581269722197,9.0658393177287859,4.8812856220684067,8.7385014596282282,5.3976648400487353,9.1316856173167444,7.7100617507070526,10.207684869463264,10.037951572628423,7.6886110933916409,8.3382507190804418,5.870990393640108,7.1378823883904907,10.13880430882187,5.8832666766299955,9.5161972769966443,9.9403926058482668,8.5811815612483269,7.5287349112400204,6.0198090201171244,5.0833899700051672,7.0906183557943239,5.9173334977649068,7.2387913377557922,10.478303515965678,8.6365749484363175,10.432505979114138,6.667846981335197,7.04213755949886,7.678580835924345,6.6015968992827512,10.225393137328693,10.011253921805856,9.8512606645909635,8.2066791077147272,10.579220990142201,7.837554360881084,7.8167071471525853,6.1499629049286604,6.6336604800388717,9.7033583770922078,8.6176464863372253,5.9208542969404299,6.318751874152122,8.5194346774084906,8.8167954354885332,6.2060314236713321,5.0436186465782704,8.9727771044691682,11.310161580315309,8.5815266915384356,10.864782051120534,10.431857667692142,7.7057983672863655,5.4917437030740972,5.2156963378596997,8.5534691885305065,8.3037177529176098,5.5980144685780218,9.3117031071478866,7.7986379423883907,6.412031709625774,8.5529733773530232,8.7169092495389453,7.6715286630823787,6.3900225224681781,11.563118834662339,6.6501884882126987,7.7063159737954585,7.5198821908781266,5.9655311650814777,7.8888032580715706,5.5919566594739445,10.186854327470236,9.6009056941948412,6.8547341770048842,5.1934011965984768,6.3000515802396588,10.595943244072636,9.3229375397894927,6.505111188060674,8.7393074131524759,8.6828127091185578,6.6123635634603035,7.3909095581372242,8.0647716867585917,7.232299516166484,8.7911439189817209,9.3711684227439012,9.6691636079020107,10.432108790895034,7.8773175472322325,7.9804136599615321,5.8238443931669197,9.1243248625821334,8.5657128428099121,8.4939347998390353,7.4866525500383387,10.37327865920054,7.3909095581372242,9.1511560249658608,6.330985702477653,7.0856587570903153,9.0611579963273314,5.5922175663130469,10.390097222591852,9.0413925863016456,9.4516734855905948,7.0423735807068981,8.228350445643704,9.6461251578352343,7.1668372395019304,6.2613962599209509,7.8890919032592919,7.5012091880101357,10.382589664767123,10.536426821318949,7.330261033692385,5.6318567350846118,6.1233477071431475,7.9056333710934217,5.9123401676419922,5.6532608123086208,7.6134632415869401,9.2573021990889188,8.0598862174300603,8.5845901234022897,7.6314947081764251,7.447133373565296,5.9333586257009499,6.9439232603645813,9.9564305104802155,10.241155145862331,10.531860984294644,9.116725055079943,6.8594365036915077,7.3421058235133847,8.6176464863372253,6.5831463937081471,8.0647716867585917,6.4140489470235345,6.0689578539729787,5.7707243554099694],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Urban Rate: 24.04 <br>Income Per Person: 558.06 <br> Country: Afghanistan","Urban Rate: 46.72 <br>Income Per Person: 1915 <br> Country: Albania","Urban Rate: 65.22 <br>Income Per Person: 2231.99 <br> Country: Algeria","Urban Rate: 88.92 <br>Income Per Person: 21943.34 <br> Country: Andorra","Urban Rate: 56.7 <br>Income Per Person: 1381 <br> Country: Angola","Urban Rate: 30.46 <br>Income Per Person: 11894.46 <br> Country: Antigua and Barbuda","Urban Rate: 92 <br>Income Per Person: 10749.42 <br> Country: Argentina","Urban Rate: 63.86 <br>Income Per Person: 1326.74 <br> Country: Armenia","Urban Rate: 46.78 <br>Income Per Person: 1381 <br> Country: Aruba","Urban Rate: 88.74 <br>Income Per Person: 25249.99 <br> Country: Australia","Urban Rate: 67.16 <br>Income Per Person: 26692.98 <br> Country: Austria","Urban Rate: 51.92 <br>Income Per Person: 2344.9 <br> Country: Azerbaijan","Urban Rate: 83.7 <br>Income Per Person: 19630.54 <br> Country: Bahamas","Urban Rate: 88.52 <br>Income Per Person: 12505.21 <br> Country: Bahrain","Urban Rate: 27.14 <br>Income Per Person: 558.06 <br> Country: Bangladesh","Urban Rate: 39.84 <br>Income Per Person: 9243.59 <br> Country: Barbados","Urban Rate: 73.46 <br>Income Per Person: 2737.67 <br> Country: Belarus","Urban Rate: 97.36 <br>Income Per Person: 24496.05 <br> Country: Belgium","Urban Rate: 51.7 <br>Income Per Person: 3545.65 <br> Country: Belize","Urban Rate: 41.2 <br>Income Per Person: 377.04 <br> Country: Benin","Urban Rate: 100 <br>Income Per Person: 62682.15 <br> Country: Bermuda","Urban Rate: 34.48 <br>Income Per Person: 1324.19 <br> Country: Bhutan","Urban Rate: 65.58 <br>Income Per Person: 1232.79 <br> Country: Bolivia","Urban Rate: 47.44 <br>Income Per Person: 2183.34 <br> Country: Bosnia and Herzegovina","Urban Rate: 59.58 <br>Income Per Person: 4189.44 <br> Country: Botswana","Urban Rate: 85.58 <br>Income Per Person: 4699.41 <br> Country: Brazil","Urban Rate: 74.82 <br>Income Per Person: 17092.46 <br> Country: Brunei","Urban Rate: 71.1 <br>Income Per Person: 2549.56 <br> Country: Bulgaria","Urban Rate: 19.56 <br>Income Per Person: 276.2 <br> Country: Burkina Faso","Urban Rate: 10.4 <br>Income Per Person: 115.31 <br> Country: Burundi","Urban Rate: 21.56 <br>Income Per Person: 557.95 <br> Country: Cambodia","Urban Rate: 56.76 <br>Income Per Person: 713.64 <br> Country: Cameroon","Urban Rate: 80.4 <br>Income Per Person: 25575.35 <br> Country: Canada","Urban Rate: 59.62 <br>Income Per Person: 1959.84 <br> Country: Cape Verde","Urban Rate: 100 <br>Income Per Person: 32535.83 <br> Country: Cayman Islands","Urban Rate: 38.58 <br>Income Per Person: 239.52 <br> Country: Central African Rep.","Urban Rate: 26.68 <br>Income Per Person: 275.88 <br> Country: Chad","Urban Rate: 88.44 <br>Income Per Person: 6334.11 <br> Country: Chile","Urban Rate: 43.1 <br>Income Per Person: 2425.47 <br> Country: China","Urban Rate: 74.5 <br>Income Per Person: 3233.42 <br> Country: Colombia","Urban Rate: 28.08 <br>Income Per Person: 336.37 <br> Country: Comoros","Urban Rate: 33.96 <br>Income Per Person: 103.78 <br> Country: Congo, Dem. Rep.","Urban Rate: 61.34 <br>Income Per Person: 1253.29 <br> Country: Congo, Rep.","Urban Rate: 63.26 <br>Income Per Person: 5188.9 <br> Country: Costa Rica","Urban Rate: 48.78 <br>Income Per Person: 591.07 <br> Country: Cote d'Ivoire","Urban Rate: 57.28 <br>Income Per Person: 6338.49 <br> Country: Croatia","Urban Rate: 75.66 <br>Income Per Person: 4495.05 <br> Country: Cuba","Urban Rate: 69.9 <br>Income Per Person: 15313.86 <br> Country: Cyprus","Urban Rate: 73.5 <br>Income Per Person: 7381.31 <br> Country: Czech Rep.","Urban Rate: 86.68 <br>Income Per Person: 30532.28 <br> Country: Denmark","Urban Rate: 87.3 <br>Income Per Person: 895.32 <br> Country: Djibouti","Urban Rate: 73.92 <br>Income Per Person: 6147.78 <br> Country: Dominica","Urban Rate: 69.02 <br>Income Per Person: 4049.17 <br> Country: Dominican Rep.","Urban Rate: 65.58 <br>Income Per Person: 1728.02 <br> Country: Ecuador","Urban Rate: 42.72 <br>Income Per Person: 1975.55 <br> Country: Egypt","Urban Rate: 60.7 <br>Income Per Person: 2557.43 <br> Country: El Salvador","Urban Rate: 39.38 <br>Income Per Person: 8654.54 <br> Country: Equatorial Guinea","Urban Rate: 20.72 <br>Income Per Person: 131.8 <br> Country: Eritrea","Urban Rate: 69.46 <br>Income Per Person: 6238.54 <br> Country: Estonia","Urban Rate: 17 <br>Income Per Person: 220.89 <br> Country: Ethiopia","Urban Rate: 41.42 <br>Income Per Person: 9243.59 <br> Country: Faeroe Islands","Urban Rate: 52.36 <br>Income Per Person: 2230.68 <br> Country: Fiji","Urban Rate: 63.3 <br>Income Per Person: 27110.73 <br> Country: Finland","Urban Rate: 77.36 <br>Income Per Person: 22878.47 <br> Country: France","Urban Rate: 51.64 <br>Income Per Person: 2183.34 <br> Country: French Polynesia","Urban Rate: 85.04 <br>Income Per Person: 4180.77 <br> Country: Gabon","Urban Rate: 56.42 <br>Income Per Person: 354.6 <br> Country: Gambia","Urban Rate: 52.74 <br>Income Per Person: 1258.76 <br> Country: Georgia","Urban Rate: 73.64 <br>Income Per Person: 25306.19 <br> Country: Germany","Urban Rate: 50.02 <br>Income Per Person: 358.98 <br> Country: Ghana","Urban Rate: 61 <br>Income Per Person: 13577.88 <br> Country: Greece","Urban Rate: 83.52 <br>Income Per Person: 20751.89 <br> Country: Greenland","Urban Rate: 30.84 <br>Income Per Person: 5330.4 <br> Country: Grenada","Urban Rate: 48.58 <br>Income Per Person: 1860.75 <br> Country: Guatemala","Urban Rate: 34.44 <br>Income Per Person: 411.5 <br> Country: Guinea","Urban Rate: 29.84 <br>Income Per Person: 161.32 <br> Country: Guinea-Bissau","Urban Rate: 28.38 <br>Income Per Person: 1200.65 <br> Country: Guyana","Urban Rate: 46.84 <br>Income Per Person: 371.42 <br> Country: Haiti","Urban Rate: 47.88 <br>Income Per Person: 1392.41 <br> Country: Honduras","Urban Rate: 100 <br>Income Per Person: 35536.07 <br> Country: Hong Kong, China","Urban Rate: 67.5 <br>Income Per Person: 5634 <br> Country: Hungary","Urban Rate: 92.26 <br>Income Per Person: 33945.31 <br> Country: Iceland","Urban Rate: 29.54 <br>Income Per Person: 786.7 <br> Country: India","Urban Rate: 51.46 <br>Income Per Person: 1143.83 <br> Country: Indonesia","Urban Rate: 68.46 <br>Income Per Person: 2161.55 <br> Country: Iran","Urban Rate: 66.6 <br>Income Per Person: 736.27 <br> Country: Iraq","Urban Rate: 61.34 <br>Income Per Person: 27595.09 <br> Country: Ireland","Urban Rate: 91.66 <br>Income Per Person: 22275.75 <br> Country: Israel","Urban Rate: 68.08 <br>Income Per Person: 18982.27 <br> Country: Italy","Urban Rate: 53.3 <br>Income Per Person: 3665.35 <br> Country: Jamaica","Urban Rate: 66.48 <br>Income Per Person: 39309.48 <br> Country: Japan","Urban Rate: 78.42 <br>Income Per Person: 2534 <br> Country: Jordan","Urban Rate: 57.94 <br>Income Per Person: 2481.72 <br> Country: Kazakhstan","Urban Rate: 21.6 <br>Income Per Person: 468.7 <br> Country: Kenya","Urban Rate: 43.84 <br>Income Per Person: 760.26 <br> Country: Kiribati","Urban Rate: 81.46 <br>Income Per Person: 16372.5 <br> Country: Korea, Rep.","Urban Rate: 98.36 <br>Income Per Person: 5528.36 <br> Country: Kuwait","Urban Rate: 36.28 <br>Income Per Person: 372.73 <br> Country: Kyrgyzstan","Urban Rate: 30.88 <br>Income Per Person: 554.88 <br> Country: Laos","Urban Rate: 68.12 <br>Income Per Person: 5011.22 <br> Country: Latvia","Urban Rate: 86.96 <br>Income Per Person: 6746.61 <br> Country: Lebanon","Urban Rate: 25.46 <br>Income Per Person: 495.73 <br> Country: Lesotho","Urban Rate: 60.14 <br>Income Per Person: 155.03 <br> Country: Liberia","Urban Rate: 77.54 <br>Income Per Person: 7885.47 <br> Country: Libya","Urban Rate: 14.32 <br>Income Per Person: 81647.1 <br> Country: Liechtenstein","Urban Rate: 66.96 <br>Income Per Person: 5332.24 <br> Country: Lithuania","Urban Rate: 82.44 <br>Income Per Person: 52301.59 <br> Country: Luxembourg","Urban Rate: 100 <br>Income Per Person: 33923.31 <br> Country: Macao, China","Urban Rate: 66.9 <br>Income Per Person: 2221.19 <br> Country: Macedonia, FYR","Urban Rate: 29.52 <br>Income Per Person: 242.68 <br> Country: Madagascar","Urban Rate: 18.8 <br>Income Per Person: 184.14 <br> Country: Malawi","Urban Rate: 70.36 <br>Income Per Person: 5184.71 <br> Country: Malaysia","Urban Rate: 37.86 <br>Income Per Person: 4038.86 <br> Country: Maldives","Urban Rate: 32.18 <br>Income Per Person: 269.89 <br> Country: Mali","Urban Rate: 94.26 <br>Income Per Person: 11066.78 <br> Country: Malta","Urban Rate: 71.08 <br>Income Per Person: 2437.28 <br> Country: Marshall Islands","Urban Rate: 41 <br>Income Per Person: 609.13 <br> Country: Mauritania","Urban Rate: 42.48 <br>Income Per Person: 5182.14 <br> Country: Mauritius","Urban Rate: 77.2 <br>Income Per Person: 6105.28 <br> Country: Mexico","Urban Rate: 22.54 <br>Income Per Person: 2146.36 <br> Country: Micronesia, Fed. Sts.","Urban Rate: 41.76 <br>Income Per Person: 595.87 <br> Country: Moldova","Urban Rate: 100 <br>Income Per Person: 105147.44 <br> Country: Monaco","Urban Rate: 57.18 <br>Income Per Person: 772.93 <br> Country: Mongolia","Urban Rate: 60.18 <br>Income Per Person: 2222.34 <br> Country: Montenegro","Urban Rate: 56.02 <br>Income Per Person: 1844.35 <br> Country: Morocco","Urban Rate: 36.84 <br>Income Per Person: 389.76 <br> Country: Mozambique","Urban Rate: 36.84 <br>Income Per Person: 2667.25 <br> Country: Namibia","Urban Rate: 17.24 <br>Income Per Person: 268.26 <br> Country: Nepal","Urban Rate: 81.82 <br>Income Per Person: 26551.84 <br> Country: Netherlands","Urban Rate: 86.56 <br>Income Per Person: 14778.16 <br> Country: New Zealand","Urban Rate: 56.74 <br>Income Per Person: 948.36 <br> Country: Nicaragua","Urban Rate: 16.54 <br>Income Per Person: 180.08 <br> Country: Niger","Urban Rate: 48.36 <br>Income Per Person: 544.6 <br> Country: Nigeria","Urban Rate: 77.48 <br>Income Per Person: 39972.35 <br> Country: Norway","Urban Rate: 71.62 <br>Income Per Person: 11191.81 <br> Country: Oman","Urban Rate: 36.16 <br>Income Per Person: 668.55 <br> Country: Pakistan","Urban Rate: 80.46 <br>Income Per Person: 6243.57 <br> Country: Palau","Urban Rate: 73.2 <br>Income Per Person: 5900.62 <br> Country: Panama","Urban Rate: 12.54 <br>Income Per Person: 744.24 <br> Country: Papua New Guinea","Urban Rate: 60.3 <br>Income Per Person: 1621.18 <br> Country: Paraguay","Urban Rate: 71.4 <br>Income Per Person: 3180.43 <br> Country: Peru","Urban Rate: 64.92 <br>Income Per Person: 1383.4 <br> Country: Philippines","Urban Rate: 61.32 <br>Income Per Person: 6575.75 <br> Country: Poland","Urban Rate: 59.46 <br>Income Per Person: 11744.83 <br> Country: Portugal","Urban Rate: 98.32 <br>Income Per Person: 15822.11 <br> Country: Puerto Rico","Urban Rate: 95.64 <br>Income Per Person: 33931.83 <br> Country: Qatar","Urban Rate: 54.24 <br>Income Per Person: 2636.79 <br> Country: Romania","Urban Rate: 72.84 <br>Income Per Person: 2923.14 <br> Country: Russia","Urban Rate: 18.34 <br>Income Per Person: 338.27 <br> Country: Rwanda","Urban Rate: 32.32 <br>Income Per Person: 9175.8 <br> Country: Saint Kitts and Nevis","Urban Rate: 27.84 <br>Income Per Person: 5248.58 <br> Country: Saint Lucia","Urban Rate: 47.04 <br>Income Per Person: 4885.05 <br> Country: Saint Vincent and the Grenadines","Urban Rate: 23 <br>Income Per Person: 1784.07 <br> Country: Samoa","Urban Rate: 94.22 <br>Income Per Person: 31993.2 <br> Country: San Marino","Urban Rate: 60.56 <br>Income Per Person: 1621.18 <br> Country: Sao Tome and Principe","Urban Rate: 82.42 <br>Income Per Person: 9425.33 <br> Country: Saudi Arabia","Urban Rate: 42.38 <br>Income Per Person: 561.71 <br> Country: Senegal","Urban Rate: 52.04 <br>Income Per Person: 1194.71 <br> Country: Serbia","Urban Rate: 54.34 <br>Income Per Person: 8614.12 <br> Country: Seychelles","Urban Rate: 37.76 <br>Income Per Person: 268.33 <br> Country: Sierra Leone","Urban Rate: 100 <br>Income Per Person: 32535.83 <br> Country: Singapore","Urban Rate: 56.56 <br>Income Per Person: 8445.53 <br> Country: Slovak Republic","Urban Rate: 48.6 <br>Income Per Person: 12729.45 <br> Country: Slovenia","Urban Rate: 17.96 <br>Income Per Person: 1144.1 <br> Country: Solomon Islands","Urban Rate: 60.74 <br>Income Per Person: 3745.65 <br> Country: South Africa","Urban Rate: 77.12 <br>Income Per Person: 15461.76 <br> Country: Spain","Urban Rate: 15.1 <br>Income Per Person: 1295.74 <br> Country: Sri Lanka","Urban Rate: 43.44 <br>Income Per Person: 523.95 <br> Country: Sudan","Urban Rate: 74.92 <br>Income Per Person: 2668.02 <br> Country: Suriname","Urban Rate: 24.94 <br>Income Per Person: 1810.23 <br> Country: Swaziland","Urban Rate: 84.54 <br>Income Per Person: 32292.48 <br> Country: Sweden","Urban Rate: 73.48 <br>Income Per Person: 37662.75 <br> Country: Switzerland","Urban Rate: 54.22 <br>Income Per Person: 1525.78 <br> Country: Syria","Urban Rate: 26.46 <br>Income Per Person: 279.18 <br> Country: Tajikistan","Urban Rate: 25.52 <br>Income Per Person: 456.39 <br> Country: Tanzania","Urban Rate: 33.32 <br>Income Per Person: 2712.52 <br> Country: Thailand","Urban Rate: 27.3 <br>Income Per Person: 369.57 <br> Country: Timor-Leste","Urban Rate: 42 <br>Income Per Person: 285.22 <br> Country: Togo","Urban Rate: 24.78 <br>Income Per Person: 2025.28 <br> Country: Tonga","Urban Rate: 13.22 <br>Income Per Person: 10480.82 <br> Country: Trinidad and Tobago","Urban Rate: 66.5 <br>Income Per Person: 3164.93 <br> Country: Tunisia","Urban Rate: 68.68 <br>Income Per Person: 5348.6 <br> Country: Turkey","Urban Rate: 48.62 <br>Income Per Person: 2062.13 <br> Country: Turkmenistan","Urban Rate: 60.56 <br>Income Per Person: 1714.94 <br> Country: Tuvalu","Urban Rate: 12.98 <br>Income Per Person: 377.42 <br> Country: Uganda","Urban Rate: 67.98 <br>Income Per Person: 1036.83 <br> Country: Ukraine","Urban Rate: 77.88 <br>Income Per Person: 21087.39 <br> Country: United Arab Emirates","Urban Rate: 89.94 <br>Income Per Person: 28033.49 <br> Country: United Kingdom","Urban Rate: 81.7 <br>Income Per Person: 37491.18 <br> Country: United States","Urban Rate: 92.3 <br>Income Per Person: 9106.33 <br> Country: Uruguay","Urban Rate: 36.82 <br>Income Per Person: 952.83 <br> Country: Uzbekistan","Urban Rate: 24.76 <br>Income Per Person: 1543.96 <br> Country: Vanuatu","Urban Rate: 93.32 <br>Income Per Person: 5528.36 <br> Country: Venezuela","Urban Rate: 27.84 <br>Income Per Person: 722.81 <br> Country: Vietnam","Urban Rate: 71.9 <br>Income Per Person: 3180.43 <br> Country: West Bank and Gaza","Urban Rate: 30.64 <br>Income Per Person: 610.36 <br> Country: Yemen, Rep.","Urban Rate: 35.42 <br>Income Per Person: 432.23 <br> Country: Zambia","Urban Rate: 37.34 <br>Income Per Person: 320.77 <br> Country: Zimbabwe"],"marker":{"color":"dodgerblue","size":8,"line":{"color":"black","width":1.5}},"type":"scatter","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="income-vs-internet-user-rates" class="level3">
+<h3 class="anchored" data-anchor-id="income-vs-internet-user-rates"><strong>Income vs Internet User Rates</strong></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig3 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">data =</span> gapminder_internet, <span class="at">x =</span> <span class="sc">~</span>internetuserate, <span class="at">y =</span> <span class="sc">~</span><span class="fu">log</span>(incomeperperson), <span class="at">hoverinfo =</span> <span class="st">'text'</span>,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">text =</span> <span class="sc">~</span><span class="fu">paste</span>(<span class="st">"Internet User Rates:"</span>, internetuserate, <span class="st">'&lt;br&gt;Income Per Person:'</span>, incomeperperson, <span class="st">'&lt;br&gt; Country:'</span>, country),</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> <span class="st">'purple'</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">'black'</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">width =</span> <span class="fl">1.5</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="at">title =</span> <span class="st">'ScatterPlot of Log _ Income vs Average Internet Users, R = 0.82877'</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>fig3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No trace type specified:
+  Based on info supplied, a 'scatter' trace seems appropriate.
+  Read more about this trace type -&gt; https://plotly.com/r/reference/#scatter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No scatter mode specifed:
+  Setting the mode to markers
+  Read more about this attribute -&gt; https://plotly.com/r/reference/#scatter-mode</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-ca9a25c538ea7455e454" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-ca9a25c538ea7455e454">{"x":{"visdat":{"1e5f5eb47530":["function () ","plotlyVisDat"]},"cur_data":"1e5f5eb47530","attrs":{"1e5f5eb47530":{"x":{},"y":{},"hoverinfo":"text","text":{},"marker":{"size":8,"color":"purple","line":{"color":"black","width":1.5}},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"ScatterPlot of Log _ Income vs Average Internet Users, R = 0.82877","xaxis":{"domain":[0,1],"automargin":true,"title":"internetuserate"},"yaxis":{"domain":[0,1],"automargin":true,"title":"log(incomeperperson)"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[3.6499999999999999,44.990000000000002,12.5,81,10,80.650000000000006,36,44,41.799999999999997,75.900000000000006,72.730000000000004,46.68,42.979999999999997,54.990000000000002,3.7000000000000002,70.030000000000001,32.049999999999997,73.730000000000004,12.65,3.1299999999999999,84.650000000000006,13.6,20,52,6,40.649999999999999,49.990000000000002,45.990000000000002,1.3999999999999999,2.1000000000000001,1.26,4,81.340000000000003,30,66,2.2999999999999998,1.7,45,34.380000000000003,36.5,5.0999999999999996,0.71999999999999997,5,36.5,2.6000000000000001,60.119999999999997,15.9,53.020000000000003,68.640000000000001,88.769999999999996,6.5,47.280000000000001,39.530000000000001,29,26.739999999999998,15.9,6,5.4000000000000004,74.159999999999997,0.75,75.200000000000003,14.83,86.900000000000006,77.5,48.960000000000001,7.2300000000000004,9.1999999999999993,26.300000000000001,82.530000000000001,9.5500000000000007,44.57,63.850000000000001,33.619999999999997,10.5,1,2.4500000000000002,29.879999999999999,8.3699999999999992,11.09,71.849999999999994,65.159999999999997,95.640000000000001,7.5,9.9000000000000004,13,2.4700000000000002,69.769999999999996,65.390000000000001,53.740000000000002,26.48,77.640000000000001,38.880000000000003,33.380000000000003,25.899999999999999,8.9600000000000009,82.519999999999996,38.259999999999998,19.579999999999998,7,71.510000000000005,31,3.8599999999999999,7,14,80,62.810000000000002,90.079999999999998,56.759999999999998,51.909999999999997,1.7,2.2599999999999998,56.299999999999997,28.289999999999999,2.7000000000000002,63.079999999999998,36.420000000000002,3,28.73,31.050000000000001,20.010000000000002,40.119999999999997,41.799999999999997,12.9,51.960000000000001,49,4.1699999999999999,6.5,7.9299999999999997,90.700000000000003,83,10,0.82999999999999996,28.43,93.280000000000001,61.990000000000002,16.780000000000001,18.800000000000001,42.75,1.28,19.800000000000001,34.299999999999997,25,62.469999999999999,51.280000000000001,42.689999999999998,81.590000000000003,40.020000000000003,43.369999999999997,13,76.590000000000003,40.060000000000002,41.799999999999997,6.9699999999999998,38.259999999999998,18.800000000000001,41,16,43.060000000000002,40.770000000000003,48.960000000000001,71.129999999999995,79.890000000000001,69.340000000000003,5,12.33,65.810000000000002,12,44.990000000000002,31.57,9.0099999999999998,90.019999999999996,82.170000000000002,20.66,11.550000000000001,11,21.199999999999999,0.20999999999999999,5.3799999999999999,12.01,48.520000000000003,36.560000000000002,39.82,2.2000000000000002,25,12.5,44.590000000000003,78,84.730000000000004,74.25,47.869999999999997,19.449999999999999,7.9900000000000002,35.850000000000001,27.850000000000001,36.420000000000002,12.35,10.119999999999999,11.5],"y":[6.3244664834824302,7.5574729016147462,7.7106488432044262,9.9962189556066186,7.2305631534092925,9.383828024480847,9.2826070786118944,7.1904800844646006,7.2305631534092925,10.136581038663824,10.192155888470149,7.7599980360478611,9.8848417958070698,9.4339006364534015,6.3244664834824302,9.1316856173167444,7.9148624726532235,10.106267159044958,8.1734767789990368,5.9323512826154756,11.045831997094192,7.1885562307328854,7.1170351723571725,7.6886110933916409,8.3403223524327057,8.4551922479034669,9.7463927095775169,7.843676074244569,5.621125240975192,4.7476241537830246,6.3242693526317106,6.5703786335065022,10.149384275965676,7.5806181162393749,10.390097222591852,5.4786369206713186,5.6199659885630906,8.7537045935407782,7.7937805990249824,8.0812956795878517,5.8182117445739037,4.642273273939594,7.1335273726500343,8.5542770076460997,6.3819344537086558,8.7543958487172073,8.4107320703143778,9.6365135796696766,8.9067064086171222,10.326539763582455,6.7971811962714233,8.7238463200234282,8.3062672008262624,7.4547315233710956,7.5886021195792406,7.8467581269722197,9.0658393177287859,4.8812856220684067,8.7385014596282282,5.3976648400487353,9.1316856173167444,7.7100617507070526,10.207684869463264,10.037951572628423,7.6886110933916409,8.3382507190804418,5.870990393640108,7.1378823883904907,10.13880430882187,5.8832666766299955,9.5161972769966443,9.9403926058482668,8.5811815612483269,7.5287349112400204,6.0198090201171244,5.0833899700051672,7.0906183557943239,5.9173334977649068,7.2387913377557922,10.478303515965678,8.6365749484363175,10.432505979114138,6.667846981335197,7.04213755949886,7.678580835924345,6.6015968992827512,10.225393137328693,10.011253921805856,9.8512606645909635,8.2066791077147272,10.579220990142201,7.837554360881084,7.8167071471525853,6.1499629049286604,6.6336604800388717,9.7033583770922078,8.6176464863372253,5.9208542969404299,6.318751874152122,8.5194346774084906,8.8167954354885332,6.2060314236713321,5.0436186465782704,8.9727771044691682,11.310161580315309,8.5815266915384356,10.864782051120534,10.431857667692142,7.7057983672863655,5.4917437030740972,5.2156963378596997,8.5534691885305065,8.3037177529176098,5.5980144685780218,9.3117031071478866,7.7986379423883907,6.412031709625774,8.5529733773530232,8.7169092495389453,7.6715286630823787,6.3900225224681781,11.563118834662339,6.6501884882126987,7.7063159737954585,7.5198821908781266,5.9655311650814777,7.8888032580715706,5.5919566594739445,10.186854327470236,9.6009056941948412,6.8547341770048842,5.1934011965984768,6.3000515802396588,10.595943244072636,9.3229375397894927,6.505111188060674,8.7393074131524759,8.6828127091185578,6.6123635634603035,7.3909095581372242,8.0647716867585917,7.232299516166484,8.7911439189817209,9.3711684227439012,9.6691636079020107,10.432108790895034,7.8773175472322325,7.9804136599615321,5.8238443931669197,9.1243248625821334,8.5657128428099121,8.4939347998390353,7.4866525500383387,10.37327865920054,7.3909095581372242,9.1511560249658608,6.330985702477653,7.0856587570903153,9.0611579963273314,5.5922175663130469,10.390097222591852,9.0413925863016456,9.4516734855905948,7.0423735807068981,8.228350445643704,9.6461251578352343,7.1668372395019304,6.2613962599209509,7.8890919032592919,7.5012091880101357,10.382589664767123,10.536426821318949,7.330261033692385,5.6318567350846118,6.1233477071431475,7.9056333710934217,5.9123401676419922,5.6532608123086208,7.6134632415869401,9.2573021990889188,8.0598862174300603,8.5845901234022897,7.6314947081764251,7.447133373565296,5.9333586257009499,6.9439232603645813,9.9564305104802155,10.241155145862331,10.531860984294644,9.116725055079943,6.8594365036915077,7.3421058235133847,8.6176464863372253,6.5831463937081471,8.0647716867585917,6.4140489470235345,6.0689578539729787,5.7707243554099694],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["Internet User Rates: 3.65 <br>Income Per Person: 558.06 <br> Country: Afghanistan","Internet User Rates: 44.99 <br>Income Per Person: 1915 <br> Country: Albania","Internet User Rates: 12.5 <br>Income Per Person: 2231.99 <br> Country: Algeria","Internet User Rates: 81 <br>Income Per Person: 21943.34 <br> Country: Andorra","Internet User Rates: 10 <br>Income Per Person: 1381 <br> Country: Angola","Internet User Rates: 80.65 <br>Income Per Person: 11894.46 <br> Country: Antigua and Barbuda","Internet User Rates: 36 <br>Income Per Person: 10749.42 <br> Country: Argentina","Internet User Rates: 44 <br>Income Per Person: 1326.74 <br> Country: Armenia","Internet User Rates: 41.8 <br>Income Per Person: 1381 <br> Country: Aruba","Internet User Rates: 75.9 <br>Income Per Person: 25249.99 <br> Country: Australia","Internet User Rates: 72.73 <br>Income Per Person: 26692.98 <br> Country: Austria","Internet User Rates: 46.68 <br>Income Per Person: 2344.9 <br> Country: Azerbaijan","Internet User Rates: 42.98 <br>Income Per Person: 19630.54 <br> Country: Bahamas","Internet User Rates: 54.99 <br>Income Per Person: 12505.21 <br> Country: Bahrain","Internet User Rates: 3.7 <br>Income Per Person: 558.06 <br> Country: Bangladesh","Internet User Rates: 70.03 <br>Income Per Person: 9243.59 <br> Country: Barbados","Internet User Rates: 32.05 <br>Income Per Person: 2737.67 <br> Country: Belarus","Internet User Rates: 73.73 <br>Income Per Person: 24496.05 <br> Country: Belgium","Internet User Rates: 12.65 <br>Income Per Person: 3545.65 <br> Country: Belize","Internet User Rates: 3.13 <br>Income Per Person: 377.04 <br> Country: Benin","Internet User Rates: 84.65 <br>Income Per Person: 62682.15 <br> Country: Bermuda","Internet User Rates: 13.6 <br>Income Per Person: 1324.19 <br> Country: Bhutan","Internet User Rates: 20 <br>Income Per Person: 1232.79 <br> Country: Bolivia","Internet User Rates: 52 <br>Income Per Person: 2183.34 <br> Country: Bosnia and Herzegovina","Internet User Rates: 6 <br>Income Per Person: 4189.44 <br> Country: Botswana","Internet User Rates: 40.65 <br>Income Per Person: 4699.41 <br> Country: Brazil","Internet User Rates: 49.99 <br>Income Per Person: 17092.46 <br> Country: Brunei","Internet User Rates: 45.99 <br>Income Per Person: 2549.56 <br> Country: Bulgaria","Internet User Rates: 1.4 <br>Income Per Person: 276.2 <br> Country: Burkina Faso","Internet User Rates: 2.1 <br>Income Per Person: 115.31 <br> Country: Burundi","Internet User Rates: 1.26 <br>Income Per Person: 557.95 <br> Country: Cambodia","Internet User Rates: 4 <br>Income Per Person: 713.64 <br> Country: Cameroon","Internet User Rates: 81.34 <br>Income Per Person: 25575.35 <br> Country: Canada","Internet User Rates: 30 <br>Income Per Person: 1959.84 <br> Country: Cape Verde","Internet User Rates: 66 <br>Income Per Person: 32535.83 <br> Country: Cayman Islands","Internet User Rates: 2.3 <br>Income Per Person: 239.52 <br> Country: Central African Rep.","Internet User Rates: 1.7 <br>Income Per Person: 275.88 <br> Country: Chad","Internet User Rates: 45 <br>Income Per Person: 6334.11 <br> Country: Chile","Internet User Rates: 34.38 <br>Income Per Person: 2425.47 <br> Country: China","Internet User Rates: 36.5 <br>Income Per Person: 3233.42 <br> Country: Colombia","Internet User Rates: 5.1 <br>Income Per Person: 336.37 <br> Country: Comoros","Internet User Rates: 0.72 <br>Income Per Person: 103.78 <br> Country: Congo, Dem. Rep.","Internet User Rates: 5 <br>Income Per Person: 1253.29 <br> Country: Congo, Rep.","Internet User Rates: 36.5 <br>Income Per Person: 5188.9 <br> Country: Costa Rica","Internet User Rates: 2.6 <br>Income Per Person: 591.07 <br> Country: Cote d'Ivoire","Internet User Rates: 60.12 <br>Income Per Person: 6338.49 <br> Country: Croatia","Internet User Rates: 15.9 <br>Income Per Person: 4495.05 <br> Country: Cuba","Internet User Rates: 53.02 <br>Income Per Person: 15313.86 <br> Country: Cyprus","Internet User Rates: 68.64 <br>Income Per Person: 7381.31 <br> Country: Czech Rep.","Internet User Rates: 88.77 <br>Income Per Person: 30532.28 <br> Country: Denmark","Internet User Rates: 6.5 <br>Income Per Person: 895.32 <br> Country: Djibouti","Internet User Rates: 47.28 <br>Income Per Person: 6147.78 <br> Country: Dominica","Internet User Rates: 39.53 <br>Income Per Person: 4049.17 <br> Country: Dominican Rep.","Internet User Rates: 29 <br>Income Per Person: 1728.02 <br> Country: Ecuador","Internet User Rates: 26.74 <br>Income Per Person: 1975.55 <br> Country: Egypt","Internet User Rates: 15.9 <br>Income Per Person: 2557.43 <br> Country: El Salvador","Internet User Rates: 6 <br>Income Per Person: 8654.54 <br> Country: Equatorial Guinea","Internet User Rates: 5.4 <br>Income Per Person: 131.8 <br> Country: Eritrea","Internet User Rates: 74.16 <br>Income Per Person: 6238.54 <br> Country: Estonia","Internet User Rates: 0.75 <br>Income Per Person: 220.89 <br> Country: Ethiopia","Internet User Rates: 75.2 <br>Income Per Person: 9243.59 <br> Country: Faeroe Islands","Internet User Rates: 14.83 <br>Income Per Person: 2230.68 <br> Country: Fiji","Internet User Rates: 86.9 <br>Income Per Person: 27110.73 <br> Country: Finland","Internet User Rates: 77.5 <br>Income Per Person: 22878.47 <br> Country: France","Internet User Rates: 48.96 <br>Income Per Person: 2183.34 <br> Country: French Polynesia","Internet User Rates: 7.23 <br>Income Per Person: 4180.77 <br> Country: Gabon","Internet User Rates: 9.2 <br>Income Per Person: 354.6 <br> Country: Gambia","Internet User Rates: 26.3 <br>Income Per Person: 1258.76 <br> Country: Georgia","Internet User Rates: 82.53 <br>Income Per Person: 25306.19 <br> Country: Germany","Internet User Rates: 9.55 <br>Income Per Person: 358.98 <br> Country: Ghana","Internet User Rates: 44.57 <br>Income Per Person: 13577.88 <br> Country: Greece","Internet User Rates: 63.85 <br>Income Per Person: 20751.89 <br> Country: Greenland","Internet User Rates: 33.62 <br>Income Per Person: 5330.4 <br> Country: Grenada","Internet User Rates: 10.5 <br>Income Per Person: 1860.75 <br> Country: Guatemala","Internet User Rates: 1 <br>Income Per Person: 411.5 <br> Country: Guinea","Internet User Rates: 2.45 <br>Income Per Person: 161.32 <br> Country: Guinea-Bissau","Internet User Rates: 29.88 <br>Income Per Person: 1200.65 <br> Country: Guyana","Internet User Rates: 8.37 <br>Income Per Person: 371.42 <br> Country: Haiti","Internet User Rates: 11.09 <br>Income Per Person: 1392.41 <br> Country: Honduras","Internet User Rates: 71.85 <br>Income Per Person: 35536.07 <br> Country: Hong Kong, China","Internet User Rates: 65.16 <br>Income Per Person: 5634 <br> Country: Hungary","Internet User Rates: 95.64 <br>Income Per Person: 33945.31 <br> Country: Iceland","Internet User Rates: 7.5 <br>Income Per Person: 786.7 <br> Country: India","Internet User Rates: 9.9 <br>Income Per Person: 1143.83 <br> Country: Indonesia","Internet User Rates: 13 <br>Income Per Person: 2161.55 <br> Country: Iran","Internet User Rates: 2.47 <br>Income Per Person: 736.27 <br> Country: Iraq","Internet User Rates: 69.77 <br>Income Per Person: 27595.09 <br> Country: Ireland","Internet User Rates: 65.39 <br>Income Per Person: 22275.75 <br> Country: Israel","Internet User Rates: 53.74 <br>Income Per Person: 18982.27 <br> Country: Italy","Internet User Rates: 26.48 <br>Income Per Person: 3665.35 <br> Country: Jamaica","Internet User Rates: 77.64 <br>Income Per Person: 39309.48 <br> Country: Japan","Internet User Rates: 38.88 <br>Income Per Person: 2534 <br> Country: Jordan","Internet User Rates: 33.38 <br>Income Per Person: 2481.72 <br> Country: Kazakhstan","Internet User Rates: 25.9 <br>Income Per Person: 468.7 <br> Country: Kenya","Internet User Rates: 8.96 <br>Income Per Person: 760.26 <br> Country: Kiribati","Internet User Rates: 82.52 <br>Income Per Person: 16372.5 <br> Country: Korea, Rep.","Internet User Rates: 38.26 <br>Income Per Person: 5528.36 <br> Country: Kuwait","Internet User Rates: 19.58 <br>Income Per Person: 372.73 <br> Country: Kyrgyzstan","Internet User Rates: 7 <br>Income Per Person: 554.88 <br> Country: Laos","Internet User Rates: 71.51 <br>Income Per Person: 5011.22 <br> Country: Latvia","Internet User Rates: 31 <br>Income Per Person: 6746.61 <br> Country: Lebanon","Internet User Rates: 3.86 <br>Income Per Person: 495.73 <br> Country: Lesotho","Internet User Rates: 7 <br>Income Per Person: 155.03 <br> Country: Liberia","Internet User Rates: 14 <br>Income Per Person: 7885.47 <br> Country: Libya","Internet User Rates: 80 <br>Income Per Person: 81647.1 <br> Country: Liechtenstein","Internet User Rates: 62.81 <br>Income Per Person: 5332.24 <br> Country: Lithuania","Internet User Rates: 90.08 <br>Income Per Person: 52301.59 <br> Country: Luxembourg","Internet User Rates: 56.76 <br>Income Per Person: 33923.31 <br> Country: Macao, China","Internet User Rates: 51.91 <br>Income Per Person: 2221.19 <br> Country: Macedonia, FYR","Internet User Rates: 1.7 <br>Income Per Person: 242.68 <br> Country: Madagascar","Internet User Rates: 2.26 <br>Income Per Person: 184.14 <br> Country: Malawi","Internet User Rates: 56.3 <br>Income Per Person: 5184.71 <br> Country: Malaysia","Internet User Rates: 28.29 <br>Income Per Person: 4038.86 <br> Country: Maldives","Internet User Rates: 2.7 <br>Income Per Person: 269.89 <br> Country: Mali","Internet User Rates: 63.08 <br>Income Per Person: 11066.78 <br> Country: Malta","Internet User Rates: 36.42 <br>Income Per Person: 2437.28 <br> Country: Marshall Islands","Internet User Rates: 3 <br>Income Per Person: 609.13 <br> Country: Mauritania","Internet User Rates: 28.73 <br>Income Per Person: 5182.14 <br> Country: Mauritius","Internet User Rates: 31.05 <br>Income Per Person: 6105.28 <br> Country: Mexico","Internet User Rates: 20.01 <br>Income Per Person: 2146.36 <br> Country: Micronesia, Fed. Sts.","Internet User Rates: 40.12 <br>Income Per Person: 595.87 <br> Country: Moldova","Internet User Rates: 41.8 <br>Income Per Person: 105147.44 <br> Country: Monaco","Internet User Rates: 12.9 <br>Income Per Person: 772.93 <br> Country: Mongolia","Internet User Rates: 51.96 <br>Income Per Person: 2222.34 <br> Country: Montenegro","Internet User Rates: 49 <br>Income Per Person: 1844.35 <br> Country: Morocco","Internet User Rates: 4.17 <br>Income Per Person: 389.76 <br> Country: Mozambique","Internet User Rates: 6.5 <br>Income Per Person: 2667.25 <br> Country: Namibia","Internet User Rates: 7.93 <br>Income Per Person: 268.26 <br> Country: Nepal","Internet User Rates: 90.7 <br>Income Per Person: 26551.84 <br> Country: Netherlands","Internet User Rates: 83 <br>Income Per Person: 14778.16 <br> Country: New Zealand","Internet User Rates: 10 <br>Income Per Person: 948.36 <br> Country: Nicaragua","Internet User Rates: 0.83 <br>Income Per Person: 180.08 <br> Country: Niger","Internet User Rates: 28.43 <br>Income Per Person: 544.6 <br> Country: Nigeria","Internet User Rates: 93.28 <br>Income Per Person: 39972.35 <br> Country: Norway","Internet User Rates: 61.99 <br>Income Per Person: 11191.81 <br> Country: Oman","Internet User Rates: 16.78 <br>Income Per Person: 668.55 <br> Country: Pakistan","Internet User Rates: 18.8 <br>Income Per Person: 6243.57 <br> Country: Palau","Internet User Rates: 42.75 <br>Income Per Person: 5900.62 <br> Country: Panama","Internet User Rates: 1.28 <br>Income Per Person: 744.24 <br> Country: Papua New Guinea","Internet User Rates: 19.8 <br>Income Per Person: 1621.18 <br> Country: Paraguay","Internet User Rates: 34.3 <br>Income Per Person: 3180.43 <br> Country: Peru","Internet User Rates: 25 <br>Income Per Person: 1383.4 <br> Country: Philippines","Internet User Rates: 62.47 <br>Income Per Person: 6575.75 <br> Country: Poland","Internet User Rates: 51.28 <br>Income Per Person: 11744.83 <br> Country: Portugal","Internet User Rates: 42.69 <br>Income Per Person: 15822.11 <br> Country: Puerto Rico","Internet User Rates: 81.59 <br>Income Per Person: 33931.83 <br> Country: Qatar","Internet User Rates: 40.02 <br>Income Per Person: 2636.79 <br> Country: Romania","Internet User Rates: 43.37 <br>Income Per Person: 2923.14 <br> Country: Russia","Internet User Rates: 13 <br>Income Per Person: 338.27 <br> Country: Rwanda","Internet User Rates: 76.59 <br>Income Per Person: 9175.8 <br> Country: Saint Kitts and Nevis","Internet User Rates: 40.06 <br>Income Per Person: 5248.58 <br> Country: Saint Lucia","Internet User Rates: 41.8 <br>Income Per Person: 4885.05 <br> Country: Saint Vincent and the Grenadines","Internet User Rates: 6.97 <br>Income Per Person: 1784.07 <br> Country: Samoa","Internet User Rates: 38.26 <br>Income Per Person: 31993.2 <br> Country: San Marino","Internet User Rates: 18.8 <br>Income Per Person: 1621.18 <br> Country: Sao Tome and Principe","Internet User Rates: 41 <br>Income Per Person: 9425.33 <br> Country: Saudi Arabia","Internet User Rates: 16 <br>Income Per Person: 561.71 <br> Country: Senegal","Internet User Rates: 43.06 <br>Income Per Person: 1194.71 <br> Country: Serbia","Internet User Rates: 40.77 <br>Income Per Person: 8614.12 <br> Country: Seychelles","Internet User Rates: 48.96 <br>Income Per Person: 268.33 <br> Country: Sierra Leone","Internet User Rates: 71.13 <br>Income Per Person: 32535.83 <br> Country: Singapore","Internet User Rates: 79.89 <br>Income Per Person: 8445.53 <br> Country: Slovak Republic","Internet User Rates: 69.34 <br>Income Per Person: 12729.45 <br> Country: Slovenia","Internet User Rates: 5 <br>Income Per Person: 1144.1 <br> Country: Solomon Islands","Internet User Rates: 12.33 <br>Income Per Person: 3745.65 <br> Country: South Africa","Internet User Rates: 65.81 <br>Income Per Person: 15461.76 <br> Country: Spain","Internet User Rates: 12 <br>Income Per Person: 1295.74 <br> Country: Sri Lanka","Internet User Rates: 44.99 <br>Income Per Person: 523.95 <br> Country: Sudan","Internet User Rates: 31.57 <br>Income Per Person: 2668.02 <br> Country: Suriname","Internet User Rates: 9.01 <br>Income Per Person: 1810.23 <br> Country: Swaziland","Internet User Rates: 90.02 <br>Income Per Person: 32292.48 <br> Country: Sweden","Internet User Rates: 82.17 <br>Income Per Person: 37662.75 <br> Country: Switzerland","Internet User Rates: 20.66 <br>Income Per Person: 1525.78 <br> Country: Syria","Internet User Rates: 11.55 <br>Income Per Person: 279.18 <br> Country: Tajikistan","Internet User Rates: 11 <br>Income Per Person: 456.39 <br> Country: Tanzania","Internet User Rates: 21.2 <br>Income Per Person: 2712.52 <br> Country: Thailand","Internet User Rates: 0.21 <br>Income Per Person: 369.57 <br> Country: Timor-Leste","Internet User Rates: 5.38 <br>Income Per Person: 285.22 <br> Country: Togo","Internet User Rates: 12.01 <br>Income Per Person: 2025.28 <br> Country: Tonga","Internet User Rates: 48.52 <br>Income Per Person: 10480.82 <br> Country: Trinidad and Tobago","Internet User Rates: 36.56 <br>Income Per Person: 3164.93 <br> Country: Tunisia","Internet User Rates: 39.82 <br>Income Per Person: 5348.6 <br> Country: Turkey","Internet User Rates: 2.2 <br>Income Per Person: 2062.13 <br> Country: Turkmenistan","Internet User Rates: 25 <br>Income Per Person: 1714.94 <br> Country: Tuvalu","Internet User Rates: 12.5 <br>Income Per Person: 377.42 <br> Country: Uganda","Internet User Rates: 44.59 <br>Income Per Person: 1036.83 <br> Country: Ukraine","Internet User Rates: 78 <br>Income Per Person: 21087.39 <br> Country: United Arab Emirates","Internet User Rates: 84.73 <br>Income Per Person: 28033.49 <br> Country: United Kingdom","Internet User Rates: 74.25 <br>Income Per Person: 37491.18 <br> Country: United States","Internet User Rates: 47.87 <br>Income Per Person: 9106.33 <br> Country: Uruguay","Internet User Rates: 19.45 <br>Income Per Person: 952.83 <br> Country: Uzbekistan","Internet User Rates: 7.99 <br>Income Per Person: 1543.96 <br> Country: Vanuatu","Internet User Rates: 35.85 <br>Income Per Person: 5528.36 <br> Country: Venezuela","Internet User Rates: 27.85 <br>Income Per Person: 722.81 <br> Country: Vietnam","Internet User Rates: 36.42 <br>Income Per Person: 3180.43 <br> Country: West Bank and Gaza","Internet User Rates: 12.35 <br>Income Per Person: 610.36 <br> Country: Yemen, Rep.","Internet User Rates: 10.12 <br>Income Per Person: 432.23 <br> Country: Zambia","Internet User Rates: 11.5 <br>Income Per Person: 320.77 <br> Country: Zimbabwe"],"marker":{"color":"purple","size":8,"line":{"color":"black","width":1.5}},"type":"scatter","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="key-insights" class="level3">
+<h3 class="anchored" data-anchor-id="key-insights">Key Insights</h3>
+<ol type="1">
+<li><p><strong>Global Internet Usage Trends</strong>:</p>
+<ul>
+<li><p>Internet usage has shown a steady increase globally over the years, with significant growth in the last decade.</p></li>
+<li><p>Africa and Asia, despite improvements, still lag behind Europe and North America in internet penetration rates.</p></li>
+</ul></li>
+<li><p><strong>Income and Internet Usage Relationship</strong>:</p>
+<ul>
+<li><p>A strong positive correlation exists between a country’s income per person and its internet usage rate.</p></li>
+<li><p>High-income countries have higher internet penetration, suggesting economic development as a key driver for internet access.</p></li>
+</ul></li>
+<li><p><strong>Top and Bottom Performers</strong>:</p>
+<ul>
+<li><p>Top performers in internet usage include countries like Iceland, Norway, and Denmark, with over 95% of the population using the internet.</p></li>
+<li><p>Countries with the lowest internet usage, such as Eritrea and Chad, have rates below 10%, indicating significant room for improvement.</p></li>
+</ul></li>
+<li><p><strong>Regional Disparities</strong>:</p>
+<ul>
+<li><p>Within continents, significant disparities exist; for example, in Asia, countries like South Korea and Japan have high internet usage rates, whereas Afghanistan and Yemen have very low rates.</p></li>
+<li><p>These disparities highlight the need for targeted policies to improve internet access in underperforming regions.</p></li>
+</ul></li>
+<li><p><strong>Impact of Education and Infrastructure</strong>:</p>
+<ul>
+<li><p>Countries investing in education and digital infrastructure tend to have higher internet usage rates.</p></li>
+<li><p>Government policies promoting digital literacy and infrastructure development are crucial for increasing internet penetration.</p></li>
+</ul></li>
+</ol>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

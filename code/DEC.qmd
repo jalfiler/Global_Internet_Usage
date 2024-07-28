@@ -1,0 +1,250 @@
+---
+title: "Data Exploration Challenge"
+format: html
+editor: visual
+---
+
+Jomaica Lei\
+7/27/24
+
+## Global Internet Usage
+
+Internet Usage: Gapminder Dataset
+
+## About Dataset
+
+**Link:** <https://www.kaggle.com/datasets/sansuthi/gapminder-internet>
+
+GapMinder collects data from a handful of sources, including the Institute for Health Metrics and Evaluation, the US Census Bureau’s International Database, the United Nations Statistics Division, and the World Bank.
+
+### **Variable Name & Description of Indicator:**
+
+-   country: Unique Identifier
+
+-   incomeperperson: Gross Domestic Product per capita in constant 2000 US\$. The inflation but not the differences in the cost of living between countries has been taken into account.
+
+-   internetuserate: Internet users (per 100 people). Internet users are people with access to the worldwide network.
+
+-   urbanrate: Urban population (% of total) Urban population refers to people living in urban areas as defined by national statistical offices (calculated using World Bank population estimates and urban ratios from the United Nations World Urbanization Prospects)
+
+More information is available at [www.gapminder.org](http://www.gapminder.org/)
+
+### 1. Install Packages and Load Libraries
+
+```{r}
+library(shiny)
+library(leaflet)
+library(ggmap)
+library(plotly)
+library(tidyverse)
+library(plotly)
+library(countrycode)
+library(readr)
+library(VIM)
+```
+
+### 2. Load the Dataset
+
+```{r}
+# set wd + load csv file
+gapminder_internet <- read_csv('gapminder_internet.csv')  
+head(gapminder_internet)
+```
+
+### 3. Variable Description
+
+```{r}
+vtable::vtable(gapminder_internet)
+```
+
+### 4. Data Cleaning
+
+```{r}
+# Add a country code value to reference in plot_ly function
+gapminder_internet <- gapminder_internet %>%
+  mutate(code = countrycode(country, origin = 'country.name', destination = 'iso3c'))
+```
+
+```{r}
+gapminder_internet$incomeperperson <- round(gapminder_internet$incomeperperson, 2)
+gapminder_internet$internetuserate <- round(gapminder_internet$internetuserate, 2)
+
+# Count NA, remove row if missing two or more
+gapminder_internet <- gapminder_internet %>%
+  mutate(count_na = rowSums(is.na(gapminder_internet))) %>%
+  filter(count_na < 2)
+summary(gapminder_internet)
+```
+
+```{r}
+# Impute missing values using kNN from VIM
+gapminder_internet <- kNN(gapminder_internet, k = 5, imp_var = FALSE)
+```
+
+```{r}
+# Verify imputed dataset
+summary(gapminder_internet)
+head(gapminder_internet)
+```
+
+### 5. **Drop-down Menu Chloropleths**
+
+```{r}
+fig <- plot_geo(gapminder_internet, locations = ~code) %>%
+  add_trace(
+    z = ~incomeperperson, zmin = 0, zmax = 50000, color = ~incomeperperson, colors = 'Blues', hoverinfo = 'text',
+    text = ~paste0(gapminder_internet$country, "\n$", gapminder_internet$incomeperperson), visible = TRUE) %>%
+  add_trace(
+    z = ~internetuserate, zmin = 0, zmax = max(gapminder_internet$internetuserate), color = ~internetuserate, hoverinfo = 'text',
+    text = ~paste0(gapminder_internet$country, "\n", gapminder_internet$internetuserate), visible = FALSE) %>%
+  add_trace(
+    z = ~urbanrate, color = ~urbanrate, zmin = 0, zmax = max(gapminder_internet$urbanrate), hoverinfo = 'text',
+    text = ~paste0(gapminder_internet$country, "\n", gapminder_internet$urbanrate, "%"), visible = FALSE)
+
+chart_types <- list(
+  type = "buttons",
+  direction = "right",
+  xanchor = 'center',
+  yanchor = "top",
+  pad = list('r' = 10, 't' = 10, 'b' = 10),
+  x = 0.5,
+  y = 1.1,
+  buttons = list(
+    list(method = "restyle",
+         args = list("visible", list(TRUE, FALSE, FALSE)),
+         label = "Income Per Person"),
+    list(method = "restyle",
+         args = list("visible", list(FALSE, TRUE, FALSE)),
+         label = "Internet User Rates"),
+    list(method = "restyle",
+         args = list("visible", list(FALSE, FALSE, TRUE)),
+         label = "Urban Rates"))
+)
+
+fig <- fig %>% layout(
+  xaxis = list(domain = c(0.1, 1)),
+  yaxis = list(title = ""),
+  updatemenus = list(chart_types),
+  title = list(text = "Choropleth Map of the World", y = 0.95),
+  margin = list(t = 100)
+) %>%
+  hide_colorbar()
+
+fig
+```
+
+### 6. **Checking Distribution of Data**
+
+```{r}
+Histogram <- plot_ly(gapminder_internet, marker = list(color = "lightgrey", line = list(color = "darkgrey",width = 2))) %>%
+  add_trace(x = ~log(incomeperperson), type = "histogram", histnorm = "probability", name = 'Log income', visible = TRUE) %>%
+  add_trace(x = ~internetuserate, type = "histogram", histnorm = "probability", visible = FALSE, name = 'Internet User Rate') %>%
+  add_trace(x = ~urbanrate, type = "histogram", histnorm = "probability", name = 'Urban Rates', visible = FALSE)
+
+chart_types <- list(
+  type = "buttons",
+  direction = "right",
+  xanchor = 'center',
+  yanchor = "top",
+  pad = list('r' = 10, 't' = 10, 'b' = 10),
+  x = 0.5,
+  y = 1.15,
+  buttons = list(
+    list(method = "restyle",
+         args = list("visible", list(TRUE, FALSE, FALSE)),
+         label = "Income Per Person"),
+    list(method = "restyle",
+         args = list("visible", list(FALSE, TRUE, FALSE)),
+         label = "Internet User Rates"),
+    list(method = "restyle",
+         args = list("visible", list(FALSE, FALSE, TRUE)),
+         label = "Urban Rates"))
+)
+
+Histogram <- Histogram %>% layout(
+  xaxis = list(domain = c(0.1, 1), title = ''),
+  yaxis = list(title = ""),
+  updatemenus = list(chart_types),
+  title = list(text = "Histogram of Log Income, Internet User Rates, and Urban Rates", y = 0.95),
+  margin = list(t = 100),
+  bargap = 0.1
+)
+
+Histogram
+```
+
+### 7. Top 10 GDP per Capita
+
+```{r}
+gapminder_internet %>%
+  arrange(desc(incomeperperson)) %>% 
+  slice(1:10) %>%
+  plot_ly(x= ~incomeperperson, y= ~country, type = 'bar', orientation = 'h',
+          marker = list(color = 'rgb(158,202,225)',
+                           line = list(color = 'rgb(8,48,107)', width = 1.5)),
+          text = ~paste0('$',incomeperperson), textposition = 'auto', hoverinfo = 'text') %>%
+  layout(yaxis = list(categoryorder = "total ascending"),
+         title = 'Top 10 Countries by Income Per Person')
+```
+
+### 8. **Correlation between GDP per Capita**
+
+Took the natural log of income to scale our data points.
+
+### **Income vs Urban Rates**
+
+```{r}
+fig2 <- plot_ly(data = gapminder_internet, x = ~urbanrate, y = ~log(incomeperperson), hoverinfo = 'text',
+              text = ~paste("Urban Rate:", urbanrate, '<br>Income Per Person:', incomeperperson, '<br> Country:', country),
+               marker = list(size = 8,
+                             color = 'dodgerblue',
+                             line = list(color = 'black',
+                                         width = 1.5))) %>%
+  layout(title = 'ScatterPlot of Log _ Income vs Urban Rate, R = 0.7093')
+fig2
+```
+
+### **Income vs Internet User Rates**
+
+```{r}
+fig3 <- plot_ly(data = gapminder_internet, x = ~internetuserate, y = ~log(incomeperperson), hoverinfo = 'text',
+              text = ~paste("Internet User Rates:", internetuserate, '<br>Income Per Person:', incomeperperson, '<br> Country:', country),
+               marker = list(size = 8,
+                             color = 'purple',
+                             line = list(color = 'black',
+                                         width = 1.5))) %>%
+  layout(title = 'ScatterPlot of Log _ Income vs Average Internet Users, R = 0.82877')
+fig3
+```
+
+### Key Insights
+
+1.  **Global Internet Usage Trends**:
+
+    -   Internet usage has shown a steady increase globally over the years, with significant growth in the last decade.
+
+    -   Africa and Asia, despite improvements, still lag behind Europe and North America in internet penetration rates.
+
+2.  **Income and Internet Usage Relationship**:
+
+    -   A strong positive correlation exists between a country's income per person and its internet usage rate.
+
+    -   High-income countries have higher internet penetration, suggesting economic development as a key driver for internet access.
+
+3.  **Top and Bottom Performers**:
+
+    -   Top performers in internet usage include countries like Iceland, Norway, and Denmark, with over 95% of the population using the internet.
+
+    -   Countries with the lowest internet usage, such as Eritrea and Chad, have rates below 10%, indicating significant room for improvement.
+
+4.  **Regional Disparities**:
+
+    -   Within continents, significant disparities exist; for example, in Asia, countries like South Korea and Japan have high internet usage rates, whereas Afghanistan and Yemen have very low rates.
+
+    -   These disparities highlight the need for targeted policies to improve internet access in underperforming regions.
+
+5.  **Impact of Education and Infrastructure**:
+
+    -   Countries investing in education and digital infrastructure tend to have higher internet usage rates.
+
+    -   Government policies promoting digital literacy and infrastructure development are crucial for increasing internet penetration.
