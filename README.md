@@ -1,6 +1,5 @@
 # Global Internet Usage
 
-### Data Exploration Assignment
 
 ---
 
@@ -8,6 +7,7 @@
 Link: https://www.kaggle.com/datasets/sansuthi/gapminder-internet
 
 GapMinder collects data from a handful of sources, including the Institute for Health Metrics and Evaluation, the US Census Bureau’s International Database, the United Nations Statistics Division, and the World Bank.
+
 
 ### Variable Name & Description of Indicator:
 `country`: Unique Identifier
