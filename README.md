@@ -28,7 +28,7 @@ Todo:
   - Coming up with an interesting story to tell using that data (and figuring out who your audience is to tell it to). The story should help us learn how the world works, or provide actionable recommendations that the chosen audience can use. (In-Progress)
   - Developing a data dashboard. (In-Progress - published)
   - Developing a memo. (In-Progress)
-  - Doing a presentation of your data, story, and dashboard. (In-progress)
+  - Doing a presentation of your data, story, and dashboard. (In-progress)  <span style="color: orange;">(In-progress)</span>
 
 
 **Dashboard:** https://jlei8.shinyapps.io/dashboard/
